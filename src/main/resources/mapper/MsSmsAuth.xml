@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.gov.zunyi.video.mapper.MsSmsAuthMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="cn.gov.zunyi.video.model.MsSmsAuth">
+		<id column="id" property="id" />
+		<!--  短信验证的电话号码-->
+		<result column="iphone" property="iphone" />
+		<!--  短信CODE-->
+		<result column="code" property="code" />
+
+		<!--  验证类型  是微信端的验证还是    pc端的验证  目前应该用不上-->
+		<result column="type" property="type" />
+		<!--备注-->
+		<result column="remark" property="remark" />
+		<!--创建时间-->
+		<result column="create_time" property="createTime" />
+	</resultMap>
+
+</mapper>

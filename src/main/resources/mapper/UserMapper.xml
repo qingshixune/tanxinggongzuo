@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.gov.zunyi.video.mapper.UserMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="cn.gov.zunyi.video.model.User">
+		<id column="id" property="id" />
+		<result column="nickname" property="nickname" />
+		<result column="mobile" property="mobile" />
+		<result column="password_hash" property="passwordHash" jdbcType="BINARY" />
+		<result column="password_salt" property="passwordSalt" jdbcType="BINARY" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="weixin_unid" property="weixinUnid" />
+		<result column="weixin_openid" property="weixinOpenid" />
+		<result column="avatar" property="avatar" />
+		<result column="sex" property="sex" />
+		<result column="province" property="province" />
+		<result column="city" property="city" />
+		<result column="enabled" property="enabled" />
+		<result column="regist_ip" property="registIp" />
+		<result column="regist_time" property="registTime" />
+		<result column="last_login_ip" property="lastLoginIp" />
+		<result column="last_login_time" property="lastLoginTime" />
+		<result column="is_perfect" property="isPerfect" />
+		<result column="total_login" property="totalLogin" />
+		<result column="is_admin" property="isAdmin" />
+		<result column="signature" property="signature" />
+		<result column="is_live" property="isLive" />
+		<result column="is_online" property="isOnline" />
+		<result column="id_number" property="idNumber" />
+		<result column="channel" property="channel" />
+		<result column="email" property="email" />
+		<result column="role_id" property="roleId" />
+		<result column="user_type" property="userType" />
+		
+		<result column="OPEN_ID" property="openId" />
+		<result column="CERTIFICATES_ID" property="certificatesId" />
+	</resultMap>
+
+	<select id="getUserType">
+		select * from tb_user where user_type=3
+	</select>
+	
+	<!-- 根据活动id 获取都有哪些用户报名 -->
+	<select id="getUserListByNewsId" resultMap="BaseResultMap">
+		select ml.create_time,tu.*
+		from ms_log ml
+		LEFT JOIN tb_user tu ON tu.OPEN_ID = ml.OPEN_ID
+		where ml.type='4' and ml.log_type='1' 
+		<if test="newsId!=null and newsId!='' ">
+			and  ml.news_id=#{newsId} 
+		</if>
+		ORDER BY ml.create_time
+	</select>
+	
+	<select id="getLogListByNewsId" resultMap="BaseResultMap">
+		select ml.create_time,tu.*
+		from ms_log ml
+		LEFT JOIN tb_user tu ON tu.OPEN_ID = ml.OPEN_ID
+		where ml.type='4' and ml.log_type='1' 
+		<if test="newsId!=null and newsId!='' ">
+			and  ml.news_id=#{newsId} 
+		</if>
+		ORDER BY ml.create_time
+	</select>
+
+
+</mapper>

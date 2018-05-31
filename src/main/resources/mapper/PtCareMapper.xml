@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.gov.zunyi.video.mapper.PtCareMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.gov.zunyi.video.model.PtCare">
+        <id column="id" property="id" />
+        <result column="money" property="money" />
+        <result column="status" property="status" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="identityname" property="identityname" />
+    </resultMap>
+
+    <select id="query" resultMap="BaseResultMap">
+        select
+            p.id,p.money,p.status,p.create_time,i.name as identityname
+        from
+            pt_care p,pt_identity i
+        where
+           p.identityid = i.id and p.status = #{status}
+    </select>
+
+</mapper>

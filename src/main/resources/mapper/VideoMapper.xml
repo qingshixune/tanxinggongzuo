@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.gov.zunyi.video.mapper.VideoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.gov.zunyi.video.model.Video">
+        <id column="id" property="id" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="is_deleted" property="isDeleted" />
+        <result column="ve_id" property="veId" />
+        <result column="video_url" property="videoUrl" />
+        <result column="video_long" property="videoLong" />
+        <result column="ve_name" property="veName" />
+    </resultMap>
+
+    <select id="getVideoByAddress" resultMap="BaseResultMap">
+        select
+            v.id,v.create_time,v.update_time,v.is_deleted,v.ve_id,v.video_url,v.video_long,
+            ve.ve_name as veName
+        from
+            video v,ve_info ve
+        where
+           ve.id = v.ve_id and ve.ve_address = #{veAddress} and v.is_deleted = 0
+    </select>
+
+    <select id="getVideoById" resultMap="BaseResultMap">
+        select
+            v.id,v.create_time,v.update_time,v.is_deleted,v.ve_id,v.video_url,v.video_long,
+            ve.ve_name
+        from
+            video v,ve_info ve
+        where
+           ve.id = v.ve_id and ve.ve_id = #{id} and v.is_deleted = 0
+    </select>
+
+    <select id="getVideoByName" resultMap="BaseResultMap">
+        select
+            v.id,v.create_time,v.update_time,v.is_deleted,v.ve_id,v.video_url,v.video_long,
+            ve.ve_name
+        from
+            video v,ve_info ve
+        where
+           ve.id = v.ve_id and ve.ve_name = #{veName} and v.is_deleted = 0
+    </select>
+
+</mapper>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.gov.zunyi.video.mapper.PartyMemberInfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.gov.zunyi.video.model.PartyMemberInfo">
+        <id column="id" property="id" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="name" property="name" />
+        <result column="used_name" property="usedName" />
+        <result column="partybranch_id" property="partybranchId" />
+        <result column="id_number" property="idNumber" />
+        <result column="sex" property="sex" />
+        <result column="age" property="age" />
+        <result column="integral" property="integral" />
+        <result column="mobile" property="mobile" />
+        <result column="email" property="email" />
+        <result column="avatar" property="avatar" />
+        <result column="province" property="province" />
+        <result column="city" property="city" />
+        <result column="district" property="district" />
+        <result column="enabled" property="enabled" />
+        <result column="post" property="post" />
+        <result column="note" property="note" />
+    </resultMap>
+
+    <!-- 关联党支部信息表查询所属党支部名称 -->
+    <select id="getPartyBranchName" resultMap="BaseResultMap">
+        select
+          pm.id,pm.name,
+          pm.partybranch_id,
+          pb.partybranch_name as partybranchname,
+          pm.integral
+        from partymember_info pm
+        LEFT JOIN partybranch_info pb ON pb.ID = pm.partybranch_id
+        where pm.enabled='1'
+        ORDER BY pm.integral DESC
+    </select>
+
+    <!-- 根据党员ID获取党员的所有信息 -->
+    <select id="getPmInfoByMemberId" resultMap="BaseResultMap">
+        select
+          pm.*,
+          pb.partybranch_name as partybranchname
+        from partymember_info pm
+        LEFT JOIN partybranch_info pb ON pb.ID = pm.partybranch_id
+        where pm.enabled='1'
+        <if test="memberId!=null and memberId!='' ">
+          and pm.id = #{memberId}
+        </if>
+    </select>
+
+    <!-- 查询党员男女人数以及比例 -->
+    <select id="getPartyMemberSexCount" resultMap="BaseResultMap">
+        select
+          count(*) as allcount,
+          sum(case when sex=1 then 1 else 0 end) mancount,
+          sum(case when sex=1 then 1 else 0 end) / count(*) manproportion,
+          sum(case when sex=0 then 1 else 0 end) womancount,
+          sum(case when sex=0 then 1 else 0 end) / count(*) womanproportion
+        from partymember_info
+        where enabled = 1;
+    </select>
+
+    <!-- 查询党员年龄分布 -->
+    <select id="getPartyMemberAgeDistribution" resultMap="BaseResultMap">
+        select
+          sum(case when age between 18 and 30 then 1 else 0 end) onecount,
+          sum(case when age between 31 and 40 then 1 else 0 end) twocount,
+          sum(case when age between 41 and 50 then 1 else 0 end) threecount,
+          sum(case when age between 51 and 60 then 1 else 0 end) fourcount,
+          sum(case when age between 61 and 70 then 1 else 0 end) fivecount,
+          sum(case when age > 70 then 1 else 0 end) sixcount
+        from partymember_info
+        where enabled = 1;
+    </select>
+
+</mapper>
