@@ -76,9 +76,8 @@ public class RoleController extends BaseController {
     // 添加
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @RequiresPermissions("/role/add")
-    public ResponseEntity<Void> add(Role role
-                                    // @RequestParam(value = "permissionIds[]", required = false) String[]
-                                    // permissionIds
+    public ResponseEntity<Void> add(Role role,
+                                    @RequestParam(value = "permissionIds[]", required = false) String[] permissionIds
     ) {
         try {
             Wrapper<Role> ew = new EntityWrapper<>();
@@ -99,15 +98,19 @@ public class RoleController extends BaseController {
             role.setCreateTime(new Date(System.currentTimeMillis()));
             role.setUpdateTime(role.getCreateTime());
             ret = this.roleService.insert(role);
-            /*
-             * if (permissionIds != null && permissionIds.length > 0) { //
-			 * 添加新分配的权限 List<RolePermission> permissions = new
-			 * ArrayList<RolePermission>(); RolePermission e = null; for (String
-			 * pid : permissionIds) { e = new RolePermission();
-			 * e.setPid(Integer.valueOf(pid)); e.setRid(role.getId());
-			 * permissions.add(e); } ret =
-			 * rolePermissionService.insertBatch(permissions); }
-			 */
+
+            if (permissionIds != null && permissionIds.length > 0) { //添加新分配的权限
+                List<RolePermission> permissions = new ArrayList<RolePermission>();
+                RolePermission e = null;
+                for (String pid : permissionIds) {
+                    e = new RolePermission();
+                    e.setPid(Integer.valueOf(pid));
+                    e.setRid(role.getId());
+                    permissions.add(e);
+                }
+                ret = rolePermissionService.insertBatch(permissions);
+            }
+
             if (!ret) {
                 // 更新失败, 400
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

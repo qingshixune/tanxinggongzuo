@@ -59,9 +59,6 @@ public class VeInfoController extends BaseController {
                 if(StringUtils.isNoneBlank(veInfo.getVideoUrl())){
                     veInfo.setVideoUrl(veInfo.getVideoUrl().trim());
                 }
-                if(StringUtils.isNoneBlank(veInfo.getVeAddress())){
-                    veInfo.setVeAddress(veInfo.getVeAddress().trim());
-                }
                 if(veInfo.getVeRunstus() == 1){
                     veInfo.setVeStrtime(new Date(System.currentTimeMillis()));
                 }
@@ -91,9 +88,7 @@ public class VeInfoController extends BaseController {
                 if(StringUtils.isNoneBlank(veInfo.getVideoUrl())){
                     veInfo.setVideoUrl(veInfo.getVideoUrl().trim());
                 }
-                if(StringUtils.isNoneBlank(veInfo.getVeAddress())){
-                    veInfo.setVeAddress(veInfo.getVeAddress().trim());
-                }
+
                 boolean rel = false;
                 rel = veInfoService.updateById(veInfo);
                 if(!rel){
@@ -160,50 +155,22 @@ public class VeInfoController extends BaseController {
             @ApiImplicitParam(name = "_size", value = "返回条数", required = false, paramType = "query", dataType = "Integer")
     })
     @RequestMapping(value = "/getVideo",method = RequestMethod.GET)
-    public ResponseEntity<Map<String,Object>> ListVideo(VeInfo veInfo){
+    public ResponseEntity<Map<String,Object>> ListVideo(@RequestParam("typeid") String typeid,@RequestParam("addressid") int addressid,@RequestParam("veStatus") int veStatus){
         Map<String,Object> map = new HashMap<>();
         Wrapper<Video> ew = new EntityWrapper<>();
         Page<Video> page = getPage();
-        List<Video> videos = new ArrayList<>();
         VeCount veCount = new VeCount();
-        //默认查询全部录像信息
-        if(veInfo.getVeAddress() == null && veInfo.getVeName() == null && veInfo.getId() == null){
-            ew.eq("is_deleted","0");
-            Page<Video> pages = videoService.selectPage(page,ew);
-            videos = pages.getRecords();
+        try {
+            List<Video> videos = videoService.getVideo(page,typeid,addressid,veStatus);
             veCount = videoService.getVeCount(videos);
             veCount.setVideoNum(videos.size());
-        }else if(veInfo.getVeAddress() != null){  //根据地址信息查询录像信息
-            videos = videoService.getVideoByAddress(page,veInfo.getVeAddress());
-            if(videos.size()<=0){
-                map.put("status","400");
-                map.put("message","查询地址有误！");
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
-            }
-            veCount = videoService.getVeCount(videos);
-            veCount.setVideoNum(videos.size());
-        }else if(veInfo.getId() != null){
-            videos = videoService.getVideoById(page,veInfo.getId());
-            if(videos.size()<=0){
-                map.put("status","400");
-                map.put("message","设备不存在！");
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
-            }
-            veCount = videoService.getVeCount(videos);
-            veCount.setVideoNum(videos.size());
-        }else if(veInfo.getVeName() != null){
-            videos = videoService.getVideoByName(page,veInfo.getVeName());
-            if(videos.size()<=0){
-                map.put("status","400");
-                map.put("message","设备不存在！");
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
-            }
-            veCount = videoService.getVeCount(videos);
-            veCount.setVideoNum(videos.size());
+            map.put("veCount",veCount);
+            map.put("videos",videos);
+            return ResponseEntity.ok(map);
+        }catch (Exception e){
+            logger.error("查询录像信息出错！");
         }
-        map.put("veCount",veCount);
-        map.put("videos",videos);
-        return ResponseEntity.ok(map);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
     }
 
     /**
@@ -237,17 +204,5 @@ public class VeInfoController extends BaseController {
     @RequestMapping(value = "/strVe",method = RequestMethod.PUT)
     public void startVe(@RequestParam("id") String id){
         
-    }
-
-    @RequestMapping(value = "/getPhotoName",method = RequestMethod.GET)
-    public List<Map<String,Object>> getPhotoName(String photoPath){
-        String pic = "D://板桥镇村（社区）党组织概况及照片/"+photoPath;
-        List<Map<String,Object>> list = new ArrayList<>();
-        try {
-            list = veInfoService.readfile(pic);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return list;
     }
 }

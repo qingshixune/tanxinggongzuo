@@ -11,6 +11,7 @@
         <result column="ve_id" property="veId" />
         <result column="video_url" property="videoUrl" />
         <result column="video_long" property="videoLong" />
+        <result column="video_status" property="videoStatus" />
         <result column="ve_name" property="veName" />
     </resultMap>
 
@@ -44,4 +45,26 @@
            ve.id = v.ve_id and ve.ve_name = #{veName} and v.is_deleted = 0
     </select>
 
+    <select id="getVideo" resultMap="BaseResultMap">
+        select
+            v.id,v.create_time,v.update_time,v.is_deleted,v.ve_id,v.video_url,v.video_long,v.video_status,
+            ve.ve_name as veName
+        from
+            video v,ve_info ve
+        <where>
+            ve.id = v.ve_id and v.is_deleted = 0
+            <if test="addressid != 0">
+               and ve.ve_addressid = #{addressid}
+            </if>
+            <if test="veStatus != 0">
+               and v.video_status = #{veStatus}
+            </if>
+            <if test="typeids != null">
+                <foreach collection="typeids" item="typeid" open="and ("
+                         close=")" separator="or">
+                   ve.ve_typeid = #{typeid}
+                </foreach>
+            </if>
+        </where>
+    </select>
 </mapper>

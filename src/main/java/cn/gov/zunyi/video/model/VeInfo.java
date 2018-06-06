@@ -51,8 +51,8 @@ public class VeInfo extends Model<VeInfo> {
     private Date veEndtime;
 
     @ApiModelProperty(value="设备地址")
-    @TableField("ve_address")
-    private String veAddress;
+    @TableField("ve_addressid")
+    private Integer veAddressid;
 
     @ApiModelProperty(value="设备安全状态")
     @TableField("ve_securitystus")
@@ -70,13 +70,21 @@ public class VeInfo extends Model<VeInfo> {
     @TableField("ve_longitude")
     private Double veLongitude;
 
-    @ApiModelProperty(value="设备监控类型")
-    @TableField("ve_type")
-    private Integer veType;
+    @ApiModelProperty(value="视频源类型")
+    @TableField("ve_typeid")
+    private Integer veTypeid;
 
     @ApiModelProperty(value="设备视频源地址")
     @TableField("video_url")
     private String videoUrl;
+
+    @ApiModelProperty(value="设备地址")
+    @TableField(exist = false)
+    private String veAddress;
+
+    @ApiModelProperty(value="设备视频源")
+    @TableField(exist = false)
+    private String veType;
 
     @ApiModelProperty(value="设备工作时长")
     @TableField(exist = false)
@@ -146,14 +154,6 @@ public class VeInfo extends Model<VeInfo> {
         this.veEndtime = veEndtime;
     }
 
-    public String getVeAddress() {
-        return veAddress;
-    }
-
-    public void setVeAddress(String veAddress) {
-        this.veAddress = veAddress;
-    }
-
     public Integer getVeSecuritystus() {
         return veSecuritystus;
     }
@@ -186,11 +186,35 @@ public class VeInfo extends Model<VeInfo> {
         this.veLongitude = veLongitude;
     }
 
-    public Integer getVeType() {
+    public Integer getVeAddressid() {
+        return veAddressid;
+    }
+
+    public void setVeAddressid(Integer veAddressid) {
+        this.veAddressid = veAddressid;
+    }
+
+    public Integer getVeTypeid() {
+        return veTypeid;
+    }
+
+    public void setVeTypeid(Integer veTypeid) {
+        this.veTypeid = veTypeid;
+    }
+
+    public String getVeAddress() {
+        return veAddress;
+    }
+
+    public void setVeAddress(String veAddress) {
+        this.veAddress = veAddress;
+    }
+
+    public String getVeType() {
         return veType;
     }
 
-    public void setVeType(Integer veType) {
+    public void setVeType(String veType) {
         this.veType = veType;
     }
 
@@ -205,7 +229,7 @@ public class VeInfo extends Model<VeInfo> {
     public VeInfo() {
     }
 
-    public VeInfo(String id, Date createTime, Date updateTime, String isDeleted, String veName, Date veStrtime, Date veEndtime, String veAddress, Integer veSecuritystus, Integer veRunstus, Double veLatitude, Double veLongitude, Integer veType, String videoUrl) {
+    public VeInfo(String id, Date createTime, Date updateTime, String isDeleted, String veName, Date veStrtime, Date veEndtime, Integer veAddressid, Integer veSecuritystus, Integer veRunstus, Double veLatitude, Double veLongitude, Integer veTypeid, String videoUrl, String velong) {
         this.id = id;
         this.createTime = createTime;
         this.updateTime = updateTime;
@@ -213,13 +237,14 @@ public class VeInfo extends Model<VeInfo> {
         this.veName = veName;
         this.veStrtime = veStrtime;
         this.veEndtime = veEndtime;
-        this.veAddress = veAddress;
+        this.veAddressid = veAddressid;
         this.veSecuritystus = veSecuritystus;
         this.veRunstus = veRunstus;
         this.veLatitude = veLatitude;
         this.veLongitude = veLongitude;
-        this.veType = veType;
+        this.veTypeid = veTypeid;
         this.videoUrl = videoUrl;
+        this.velong = velong;
     }
 
     @Override
@@ -232,13 +257,14 @@ public class VeInfo extends Model<VeInfo> {
                 ", veName='" + veName + '\'' +
                 ", veStrtime=" + veStrtime +
                 ", veEndtime=" + veEndtime +
-                ", veAddress='" + veAddress + '\'' +
+                ", veAddressid=" + veAddressid +
                 ", veSecuritystus=" + veSecuritystus +
                 ", veRunstus=" + veRunstus +
                 ", veLatitude=" + veLatitude +
                 ", veLongitude=" + veLongitude +
-                ", veType=" + veType +
+                ", veTypeid=" + veTypeid +
                 ", videoUrl='" + videoUrl + '\'' +
+                ", velong='" + velong + '\'' +
                 '}';
     }
 

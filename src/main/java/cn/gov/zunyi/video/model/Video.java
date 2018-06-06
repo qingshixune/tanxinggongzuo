@@ -46,6 +46,10 @@ public class Video extends Model<Video> {
     @TableField("video_url")
     private String videoUrl;
 
+    @ApiModelProperty(value="录像预警状态")
+    @TableField("video_status")
+    private Integer videoStatus;
+
     @ApiModelProperty(value="录像时长")
     @TableField("video_long")
     private Integer videoLong;
@@ -118,16 +122,21 @@ public class Video extends Model<Video> {
         this.videoUrl = videoUrl;
     }
 
+    public Integer getVideoStatus() { return videoStatus; }
+
+    public void setVideoStatus(Integer videoStatus) { this.videoStatus = videoStatus; }
+
     public Video() {
     }
 
-    public Video(String id, Date createTime, Date updateTime, String isDeleted, String veId, String videoUrl) {
+    public Video(String id, Date createTime, Date updateTime, String isDeleted, String veId, String videoUrl,Integer videoStatus) {
         this.id = id;
         this.createTime = createTime;
         this.updateTime = updateTime;
         this.isDeleted = isDeleted;
         this.veId = veId;
         this.videoUrl = videoUrl;
+        this.videoStatus = videoStatus;
     }
 
     @Override
@@ -139,6 +148,9 @@ public class Video extends Model<Video> {
                 ", isDeleted='" + isDeleted + '\'' +
                 ", veId='" + veId + '\'' +
                 ", videoUrl='" + videoUrl + '\'' +
+                ", videoStatus=" + videoStatus +
+                ", videoLong=" + videoLong +
+                ", veName='" + veName + '\'' +
                 '}';
     }
 

@@ -13,4 +13,9 @@ public interface VideoMapper extends BaseMapper<Video> {
     List<Video> getVideoById(Page<Video> page,@Param("id") String id);
 
     List<Video> getVideoByName(Page<Video> page,@Param("veName") String veName);
+
+    List<Video> getVideo(Page<Video> page,
+                         @Param("typeids") List<String> typeids,
+                         @Param("addressid") int addressid,
+                         @Param("veStatus") int veStatus);
 }
