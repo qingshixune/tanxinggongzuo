@@ -13,14 +13,14 @@ import java.util.Date;
 
 /**
  * <p>
- * 电梯事件
+ * 视频事件
  * </p>
  *
  * @author ZTY
  * @since 2018-5-24
  */
-@ApiModel("电梯事件表")
-@TableName("elevator_event")
+@ApiModel("视频事件表")
+@TableName("ve_event")
 public class ElevatorEvent extends Model<ElevatorEvent> {
 
     @TableId(value="id",type = IdType.UUID)
@@ -39,36 +39,70 @@ public class ElevatorEvent extends Model<ElevatorEvent> {
     private String isDeleted;
 
     @ApiModelProperty(value="电梯事件发生时间")
-    @TableField("ee_occurtime")
-    private String eeOccurtime;
+    @TableField("ve_occurtime")
+    private String veOccurtime;
 
     @ApiModelProperty(value="电梯事件结束时间")
-    @TableField("ee_endtime")
-    private String eeEndtime;
+    @TableField("ve_endtime")
+    private String veEndtime;
 
     @ApiModelProperty(value="电梯事件设备id")
-    @TableField("ee_veid")
-    private String eeVeid;
+    @TableField("ve_veid")
+    private String veVeid;
 
     @ApiModelProperty(value="电梯事件发生状态")
-    @TableField("ee_occurstus")
-    private Integer eeOccurstus;
+    @TableField("ve_occurstus")
+    private Integer veOccurstus;
 
     @ApiModelProperty(value="电梯事件紧急状态")
-    @TableField("ee_exigrncystus")
-    private Integer eeExigrncystus;
+    @TableField("ve_exigrncystus")
+    private Integer veExigrncystus;
 
     @ApiModelProperty(value="电梯事件事故状态")
-    @TableField("ee_accident")
-    private Integer eeAccident;
+    @TableField("ve_accident")
+    private Integer veAccident;
 
     @ApiModelProperty(value="电梯事件标题")
-    @TableField("ee_title")
-    private String eeTitle;
+    @TableField("ve_title")
+    private String veTitle;
 
     @ApiModelProperty(value="电梯事件内容")
-    @TableField("ee_content")
-    private String eeContent;
+    @TableField("ve_content")
+    private String veContent;
+
+    /**
+     * 0：电梯事件，1：交通事件
+     */
+    @ApiModelProperty(value="事件类型")
+    @TableField("ve_type")
+    private String veType;
+
+    @ApiModelProperty(value="用户表id")
+    @TableField("ve_userid")
+    private String veUserid;
+
+    @ApiModelProperty(value="系统表id")
+    @TableField("ve_systemid")
+    private String veSystemid;
+
+    @ApiModelProperty(value="处理结果")
+    @TableField("ve_result")
+    private String veResult;
+
+    /**
+     * 0：智能上报，1：人工上报
+     */
+    @ApiModelProperty(value="事件上报情况")
+    @TableField("ve_report")
+    private String veReport;
+
+    @ApiModelProperty(value="电梯事件类型id")
+    @TableField("ve_eetypeid")
+    private String veEetypeid;
+
+    @ApiModelProperty(value="电梯事件类型id")
+    @TableField("ve_tetypeid")
+    private String veTetypeid;
 
     @ApiModelProperty(value="视频设备名字")
     @TableField(exist = false)
@@ -114,86 +148,150 @@ public class ElevatorEvent extends Model<ElevatorEvent> {
         this.isDeleted = isDeleted;
     }
 
-    public String getEeOccurtime() {
-        return eeOccurtime;
+    public String getVeOccurtime() {
+        return veOccurtime;
     }
 
-    public void setEeOccurtime(String eeOccurtime) {
-        this.eeOccurtime = eeOccurtime;
+    public void setVeOccurtime(String veOccurtime) {
+        this.veOccurtime = veOccurtime;
     }
 
-    public String getEeEndtime() {
-        return eeEndtime;
+    public String getVeEndtime() {
+        return veEndtime;
     }
 
-    public void setEeEndtime(String eeEndtime) {
-        this.eeEndtime = eeEndtime;
+    public void setVeEndtime(String veEndtime) {
+        this.veEndtime = veEndtime;
     }
 
-    public Integer getEeOccurstus() {
-        return eeOccurstus;
+    public String getVeVeid() {
+        return veVeid;
     }
 
-    public void setEeOccurstus(Integer eeOccurstus) {
-        this.eeOccurstus = eeOccurstus;
+    public void setVeVeid(String veVeid) {
+        this.veVeid = veVeid;
     }
 
-    public Integer getEeExigrncystus() {
-        return eeExigrncystus;
+    public Integer getVeOccurstus() {
+        return veOccurstus;
     }
 
-    public void setEeExigrncystus(Integer eeExigrncystus) {
-        this.eeExigrncystus = eeExigrncystus;
+    public void setVeOccurstus(Integer veOccurstus) {
+        this.veOccurstus = veOccurstus;
     }
 
-    public Integer getEeAccident() {
-        return eeAccident;
+    public Integer getVeExigrncystus() {
+        return veExigrncystus;
     }
 
-    public void setEeAccident(Integer eeAccident) {
-        this.eeAccident = eeAccident;
+    public void setVeExigrncystus(Integer veExigrncystus) {
+        this.veExigrncystus = veExigrncystus;
     }
 
-    public String getEeVeid() {
-        return eeVeid;
+    public Integer getVeAccident() {
+        return veAccident;
     }
 
-    public void setEeVeid(String eeVeid) {
-        this.eeVeid = eeVeid;
+    public void setVeAccident(Integer veAccident) {
+        this.veAccident = veAccident;
     }
 
-    public String getEeTitle() {
-        return eeTitle;
+    public String getVeTitle() {
+        return veTitle;
     }
 
-    public void setEeTitle(String eeTitle) {
-        this.eeTitle = eeTitle;
+    public void setVeTitle(String veTitle) {
+        this.veTitle = veTitle;
     }
 
-    public String getEeContent() {
-        return eeContent;
+    public String getVeContent() {
+        return veContent;
     }
 
-    public void setEeContent(String eeContent) {
-        this.eeContent = eeContent;
+    public void setVeContent(String veContent) {
+        this.veContent = veContent;
+    }
+
+    public String getVeType() {
+        return veType;
+    }
+
+    public void setVeType(String veType) {
+        this.veType = veType;
+    }
+
+    public String getVeUserid() {
+        return veUserid;
+    }
+
+    public void setVeUserid(String veUserid) {
+        this.veUserid = veUserid;
+    }
+
+    public String getVeSystemid() {
+        return veSystemid;
+    }
+
+    public void setVeSystemid(String veSystemid) {
+        this.veSystemid = veSystemid;
+    }
+
+    public String getVeResult() {
+        return veResult;
+    }
+
+    public void setVeResult(String veResult) {
+        this.veResult = veResult;
+    }
+
+    public String getVeReport() {
+        return veReport;
+    }
+
+    public void setVeReport(String veReport) {
+        this.veReport = veReport;
+    }
+
+    public String getVeEetypeid() {
+        return veEetypeid;
+    }
+
+    public void setVeEetypeid(String veEetypeid) {
+        this.veEetypeid = veEetypeid;
+    }
+
+    public String getVeTetypeid() {
+        return veTetypeid;
+    }
+
+    public void setVeTetypeid(String veTetypeid) {
+        this.veTetypeid = veTetypeid;
     }
 
     public ElevatorEvent() {
+
     }
 
-    public ElevatorEvent(String id, Date createTime, Date updateTime, String isDeleted, String eeOccurtime, String eeEndtime, String eeVeid, Integer eeOccurstus, Integer eeExigrncystus, Integer eeAccident, String eeTitle, String eeContent, String veName) {
+    public ElevatorEvent(String id, Date createTime, Date updateTime, String isDeleted, String veOccurtime, String veEndtime, String veVeid, Integer veOccurstus, Integer veExigrncystus, Integer veAccident, String veTitle, String veContent, String veType, String veUserid, String veSystemid, String veResult, String veReport, String veEetypeid, String veTetypeid, String veName) {
         this.id = id;
         this.createTime = createTime;
         this.updateTime = updateTime;
         this.isDeleted = isDeleted;
-        this.eeOccurtime = eeOccurtime;
-        this.eeEndtime = eeEndtime;
-        this.eeVeid = eeVeid;
-        this.eeOccurstus = eeOccurstus;
-        this.eeExigrncystus = eeExigrncystus;
-        this.eeAccident = eeAccident;
-        this.eeTitle = eeTitle;
-        this.eeContent = eeContent;
+        this.veOccurtime = veOccurtime;
+        this.veEndtime = veEndtime;
+        this.veVeid = veVeid;
+        this.veOccurstus = veOccurstus;
+        this.veExigrncystus = veExigrncystus;
+        this.veAccident = veAccident;
+        this.veTitle = veTitle;
+        this.veContent = veContent;
+        this.veType = veType;
+        this.veUserid = veUserid;
+        this.veSystemid = veSystemid;
+        this.veResult = veResult;
+        this.veReport = veReport;
+        this.veEetypeid = veEetypeid;
+        this.veTetypeid = veTetypeid;
         this.veName = veName;
     }
 
@@ -204,14 +302,21 @@ public class ElevatorEvent extends Model<ElevatorEvent> {
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
                 ", isDeleted='" + isDeleted + '\'' +
-                ", eeOccurtime='" + eeOccurtime + '\'' +
-                ", eeEndtime='" + eeEndtime + '\'' +
-                ", eeVeid='" + eeVeid + '\'' +
-                ", eeOccurstus=" + eeOccurstus +
-                ", eeExigrncystus=" + eeExigrncystus +
-                ", eeAccident=" + eeAccident +
-                ", eeTitle='" + eeTitle + '\'' +
-                ", eeContent='" + eeContent + '\'' +
+                ", veOccurtime='" + veOccurtime + '\'' +
+                ", veEndtime='" + veEndtime + '\'' +
+                ", veVeid='" + veVeid + '\'' +
+                ", veOccurstus=" + veOccurstus +
+                ", veExigrncystus=" + veExigrncystus +
+                ", veAccident=" + veAccident +
+                ", veTitle='" + veTitle + '\'' +
+                ", veContent='" + veContent + '\'' +
+                ", veType='" + veType + '\'' +
+                ", veUserid='" + veUserid + '\'' +
+                ", veSystemid='" + veSystemid + '\'' +
+                ", veResult='" + veResult + '\'' +
+                ", veReport='" + veReport + '\'' +
+                ", veEetypeid='" + veEetypeid + '\'' +
+                ", veTetypeid='" + veTetypeid + '\'' +
                 ", veName='" + veName + '\'' +
                 '}';
     }

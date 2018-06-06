@@ -54,6 +54,10 @@ public class Video extends Model<Video> {
     @TableField("video_long")
     private Integer videoLong;
 
+    @ApiModelProperty(value="录像时间")
+    @TableField("video_time")
+    private Integer videoTime;
+
     @ApiModelProperty(value="设备名称")
     @TableField(exist = false)
     private String veName;
@@ -126,10 +130,18 @@ public class Video extends Model<Video> {
 
     public void setVideoStatus(Integer videoStatus) { this.videoStatus = videoStatus; }
 
+    public Integer getVideoTime() {
+        return videoTime;
+    }
+
+    public void setVideoTime(Integer videoTime) {
+        this.videoTime = videoTime;
+    }
+
     public Video() {
     }
 
-    public Video(String id, Date createTime, Date updateTime, String isDeleted, String veId, String videoUrl,Integer videoStatus) {
+    public Video(String id, Date createTime, Date updateTime, String isDeleted, String veId, String videoUrl, Integer videoStatus, Integer videoLong, Integer videoTime, String veName) {
         this.id = id;
         this.createTime = createTime;
         this.updateTime = updateTime;
@@ -137,6 +149,9 @@ public class Video extends Model<Video> {
         this.veId = veId;
         this.videoUrl = videoUrl;
         this.videoStatus = videoStatus;
+        this.videoLong = videoLong;
+        this.videoTime = videoTime;
+        this.veName = veName;
     }
 
     @Override
@@ -150,6 +165,7 @@ public class Video extends Model<Video> {
                 ", videoUrl='" + videoUrl + '\'' +
                 ", videoStatus=" + videoStatus +
                 ", videoLong=" + videoLong +
+                ", videoTime=" + videoTime +
                 ", veName='" + veName + '\'' +
                 '}';
     }

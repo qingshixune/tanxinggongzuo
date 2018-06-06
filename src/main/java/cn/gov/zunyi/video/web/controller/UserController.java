@@ -164,13 +164,13 @@ public class UserController extends BaseController {
 	//禁用或启动的状态
 	@RequestMapping(value = "/queryUserPerms/{Id}", method = RequestMethod.GET)
 	@RequiresPermissions("/user/queryUserPerms/")
-	public ResponseEntity<Map<String, Integer>> queryUserPerms(@PathVariable(value = "Id", required = true) String Id) {
-		Map<String, Integer> map = new LinkedHashMap<>();
+	public ResponseEntity<Map<String, Object>> queryUserPerms(@PathVariable(value = "Id", required = true) String Id) {
+		Map<String, Object> map = new LinkedHashMap<>();
 		try {
 			User user = userService.selectById(Id);
 			if (null == user) {
 				map.put("isLive", 0);
-				map.put("enabled", 0);
+				map.put("enabled", false);
 				return ResponseEntity.ok(map);
 			}
 			map.put("enabled", user.getEnabled());
@@ -425,7 +425,7 @@ public class UserController extends BaseController {
 		try {
 			User entity = new User();
 			entity.setId(Integer.valueOf(userId));
-			entity.setEnabled(0);
+			entity.setEnabled(false);
 			boolean ret = this.userService.updateById(entity);
 			if (!ret) {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -465,7 +465,7 @@ public class UserController extends BaseController {
 			if (StringUtils.isNotBlank(userIds)) {
 				String[] userIdArr = userIds.split(",");
 				User entity = new User();
-				entity.setEnabled(0);
+				entity.setEnabled(false);
 				for (String userId : userIdArr) {
 					entity.setId(Integer.valueOf(userId));
 					flag = this.userService.updateById(entity);
@@ -865,7 +865,7 @@ public class UserController extends BaseController {
 				userEntity.setPasswordHash(passwordHash);
 				userEntity.setCreateTime(new Date(System.currentTimeMillis()));
 				userEntity.setUpdateTime(userEntity.getCreateTime());
-				userEntity.setEnabled(1);
+				userEntity.setEnabled(true);
 				userEntity.setRegistTime(userEntity.getCreateTime());
 				userEntity.setRegistIp(NetWorkUtil.getLoggableAddress(request));
 				userEntity.setLastLoginIp(userEntity.getRegistIp());

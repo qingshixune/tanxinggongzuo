@@ -19,7 +19,7 @@ public class User extends Model<User> implements Serializable, AuthCachePrincipa
     public User() {
     }
 
-    public User(String username, String realname, String mobile, String email, Integer userType, Integer roleId, Date createTime, Date updateTime, String avatar, Integer sex, String province, String city, String district, Integer enabled, String registIp, Date registTime, String lastLoginIp, Date lastLoginTime, Integer totalLoginCounts, String clubName, String managerName, String introduction, String post, String logo, Role role) {
+    public User(String username, String realname, String mobile, String email, Integer userType, Integer roleId, Date createTime, Date updateTime, String avatar, Integer sex, String province, String city, String district, boolean enabled, String registIp, Date registTime, String lastLoginIp, Date lastLoginTime, Integer totalLoginCounts, String clubName, String managerName, String introduction, String post, String logo, Role role) {
         this.username = username;
         this.realname = realname;
         this.mobile = mobile;
@@ -114,7 +114,7 @@ public class User extends Model<User> implements Serializable, AuthCachePrincipa
     /**
      * 状态： 1 正常 0 逻辑删除
      */
-    private Integer enabled;
+    private boolean enabled;
 
 
 
@@ -325,11 +325,11 @@ public class User extends Model<User> implements Serializable, AuthCachePrincipa
         this.district = district;
     }
 
-    public Integer getEnabled() {
+    public boolean getEnabled() {
         return enabled;
     }
 
-    public void setEnabled(Integer enabled) {
+    public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
 

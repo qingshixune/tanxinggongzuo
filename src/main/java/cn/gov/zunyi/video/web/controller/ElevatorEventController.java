@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
 
-@Api("电梯事件相关接口")
+@Api("视频事件相关接口")
 @RestController
 @RequestMapping("/ee")
 public class ElevatorEventController extends BaseController {
@@ -28,21 +28,21 @@ public class ElevatorEventController extends BaseController {
     private ElevatorEventService elevatorEventService;
 
     /**
-     * 新增或修改电梯事件
+     * 新增或修改事件
      */
     @RequestMapping(value = "/addOrUpdateEE",method = RequestMethod.POST)
     public ResponseEntity<Map<String,Object>> addOrUpdateEE(ElevatorEvent elevatorEvent){
         Map<String,Object> map = new HashMap<>();
         try {
             if(elevatorEvent.getId() == null){
-                if(StringUtils.isNoneBlank(elevatorEvent.getEeTitle())){
-                    elevatorEvent.setEeTitle(elevatorEvent.getEeTitle().trim());
+                if(StringUtils.isNoneBlank(elevatorEvent.getVeTitle())){
+                    elevatorEvent.setVeTitle(elevatorEvent.getVeTitle().trim());
                 }else{
                     map.put("status","400");
                     map.put("message","事件标题不能为空");
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
                 }
-                if(!StringUtils.isNoneBlank(elevatorEvent.getEeOccurtime())){
+                if(!StringUtils.isNoneBlank(elevatorEvent.getVeOccurtime())){
                     map.put("status","400");
                     map.put("message","事件发生时间不能为空");
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);

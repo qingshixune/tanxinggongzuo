@@ -154,7 +154,7 @@ public class MsClubContraller extends BaseController {
 
 
                 club.setCreateTime(new Date(System.currentTimeMillis()));
-                club.setEnabled(1);
+                club.setEnabled(true);
                 msclub = this.clubService.insert(club);
 
                 if(club.getRoleId()!=null){
@@ -207,7 +207,7 @@ public class MsClubContraller extends BaseController {
                 ew.eq("id", Integer.parseInt(clubId));
                 User club = this.clubService.selectOne(ew);
                 if (null != club) {
-                    club.setEnabled(0);
+                    club.setEnabled(false);
                     ret = this.clubService.updateById(club);
                 }
             }

@@ -256,7 +256,7 @@ public class AdminController extends BaseController {
 	@RequiresPermissions("/admin/delete")
 	public ResponseEntity<Void> deleteAdmin(User admin) {
 		try {
-			admin.setEnabled(0);
+			admin.setEnabled(false);
 			boolean ret = this.adminService.updateById(admin);
 			if (!ret) {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -274,7 +274,7 @@ public class AdminController extends BaseController {
 		try {
 			User entity = new User();
 			entity.setId(Integer.valueOf(adminId));
-			entity.setEnabled(1);
+			entity.setEnabled(true);
 			boolean ret = this.adminService.updateById(entity);
 			if (!ret) {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -294,7 +294,7 @@ public class AdminController extends BaseController {
 			if (StringUtils.isNotBlank(adminIds)) {
 				String[] adminIdArr = adminIds.split(",");
 				User entity = new User();
-				entity.setEnabled(0);
+				entity.setEnabled(false);
 				for (String adminId : adminIdArr) {
 					entity.setId(Integer.valueOf(adminId));
 					flag = this.adminService.updateById(entity);

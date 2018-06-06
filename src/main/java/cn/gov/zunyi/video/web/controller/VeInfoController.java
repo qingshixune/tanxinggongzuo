@@ -3,7 +3,9 @@ package cn.gov.zunyi.video.web.controller;
 import cn.gov.zunyi.video.common.util.StringUtil;
 import cn.gov.zunyi.video.mapper.VideoMapper;
 import cn.gov.zunyi.video.model.*;
+import cn.gov.zunyi.video.service.VeAddressService;
 import cn.gov.zunyi.video.service.VeInfoService;
+import cn.gov.zunyi.video.service.VeTypeService;
 import cn.gov.zunyi.video.service.VideoService;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
@@ -36,11 +38,54 @@ public class VeInfoController extends BaseController {
     private VeInfoService veInfoService;
     @Autowired
     private VideoService videoService;
+    @Autowired
+    private VeTypeService veTypeService;
+    @Autowired
+    private VeAddressService veAddressService;
+
+    /**
+     * 查询视频源列表
+     */
+    @RequestMapping("/getTypelist")
+    public ResponseEntity<Map<String,Object>> typelist(){
+        Map<String,Object> map = new HashMap<>();
+        Page<VeType> pages = this.getPage();
+        try {
+            pages = veTypeService.selectPage(pages);
+            map.put("typeList",pages);
+            return ResponseEntity.ok(map);
+        }catch (Exception e){
+            map.put("status","500");
+            map.put("message","服务器忙！");
+            logger.error("查询视频源列表时出错");
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+    }
+
+    /**
+     * 查询视频地区列表
+     */
+    @RequestMapping("/getAddresslist")
+    public ResponseEntity<Map<String,Object>> addresslist(){
+        Map<String,Object> map = new HashMap<>();
+        Page<VeAddress> pages = this.getPage();
+        try {
+            pages = veAddressService.selectPage(pages);
+            map.put("addresslist",pages);
+            return ResponseEntity.ok(map);
+        }catch (Exception e){
+            map.put("status","500");
+            map.put("message","服务器忙！");
+            logger.error("查询视频源列表时出错");
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+    }
+
 
     /**
      * 新增或修改设备信息
      */
-    @RequestMapping(value = "/exit",method = RequestMethod.POST)
+    @RequestMapping(value = "/edit",method = RequestMethod.POST)
     public ResponseEntity<Map<String, Object>> addOrUpadateVeInfo(VeInfo veInfo){
         Map<String,Object> map = new HashMap<>();
         try {

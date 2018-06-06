@@ -115,7 +115,7 @@ public class MyShiroRealm extends AuthorizingRealm {
 		if (null == user) {
 			// throw new UnknownAccountException();// 没找到帐号
 			throw new AccountException("帐号或密码不正确！");
-		} else if (user.getEnabled() == 0) {
+		} else if (user.getEnabled() == false) {
 			/*
 			 * 如果用户的status为禁用。那么就抛出DisabledAccountException
 			 */
