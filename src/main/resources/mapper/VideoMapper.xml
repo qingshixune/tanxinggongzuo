@@ -67,6 +67,6 @@
             </if>
         </where>
         order by
-          
+            v.video_status desc,v.video_time desc
     </select>
 </mapper>

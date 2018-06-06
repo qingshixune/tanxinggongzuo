@@ -46,7 +46,7 @@ public class VeInfoController extends BaseController {
     /**
      * 查询视频源列表
      */
-    @RequestMapping("/getTypelist")
+    @RequestMapping(value = "/getTypelist",method = RequestMethod.GET)
     public ResponseEntity<Map<String,Object>> typelist(){
         Map<String,Object> map = new HashMap<>();
         Page<VeType> pages = this.getPage();
@@ -65,7 +65,7 @@ public class VeInfoController extends BaseController {
     /**
      * 查询视频地区列表
      */
-    @RequestMapping("/getAddresslist")
+    @RequestMapping(value = "/getAddresslist",method = RequestMethod.GET)
     public ResponseEntity<Map<String,Object>> addresslist(){
         Map<String,Object> map = new HashMap<>();
         Page<VeAddress> pages = this.getPage();
