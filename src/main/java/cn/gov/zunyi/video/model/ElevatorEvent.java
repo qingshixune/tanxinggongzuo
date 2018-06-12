@@ -38,83 +38,47 @@ public class ElevatorEvent extends Model<ElevatorEvent> {
     @TableField("is_deleted")
     private String isDeleted;
 
-    @ApiModelProperty(value="电梯事件发生时间")
-    @TableField("ve_occurtime")
-    private String veOccurtime;
-
-    @ApiModelProperty(value="电梯事件结束时间")
-    @TableField("ve_endtime")
-    private String veEndtime;
-
-    @ApiModelProperty(value="电梯事件设备id")
-    @TableField("ve_veid")
-    private String veVeid;
-
-    @ApiModelProperty(value="电梯事件发生状态")
-    @TableField("ve_occurstus")
-    private Integer veOccurstus;
-
-    @ApiModelProperty(value="电梯事件紧急状态")
-    @TableField("ve_exigrncystus")
-    private Integer veExigrncystus;
-
-    @ApiModelProperty(value="电梯事件事故状态")
-    @TableField("ve_accident")
-    private Integer veAccident;
-
-    @ApiModelProperty(value="电梯事件标题")
-    @TableField("ve_title")
-    private String veTitle;
+    @ApiModelProperty(value="电梯事件名称")
+    @TableField("event_name")
+    private String eventName;
 
     @ApiModelProperty(value="电梯事件内容")
-    @TableField("ve_content")
-    private String veContent;
+    @TableField("event_content")
+    private String eventContent;
 
     /**
      * 0：电梯事件，1：交通事件
      */
     @ApiModelProperty(value="事件类型")
-    @TableField("ve_type")
-    private String veType;
+    @TableField("event_type")
+    private Integer eventType;
 
-    @ApiModelProperty(value="用户表id")
-    @TableField("ve_userid")
-    private String veUserid;
-
-    @ApiModelProperty(value="系统表id")
-    @TableField("ve_systemid")
-    private String veSystemid;
-
-    @ApiModelProperty(value="处理结果")
-    @TableField("ve_result")
-    private String veResult;
+    @ApiModelProperty(value="事件上报方式id")
+    @TableField("event_methodid")
+    private Integer eventMethodid;
 
     /**
      * 0：智能上报，1：人工上报
      */
     @ApiModelProperty(value="事件上报情况")
-    @TableField("ve_report")
-    private String veReport;
+    @TableField("event_report")
+    private Integer eventReport;
 
-    @ApiModelProperty(value="电梯事件类型id")
-    @TableField("ve_eetypeid")
-    private String veEetypeid;
+    @ApiModelProperty(value="经度")
+    @TableField("event_longitude")
+    private String eventLongitude;
 
-    @ApiModelProperty(value="电梯事件类型id")
-    @TableField("ve_tetypeid")
-    private String veTetypeid;
+    @ApiModelProperty(value="纬度")
+    @TableField("event_latitude")
+    private String eventLatitude;
+
+    @ApiModelProperty(value="上报人id")
+    @TableField("uid")
+    private String uid;
 
     @ApiModelProperty(value="视频设备名字")
     @TableField(exist = false)
     private String veName;
-
-    public String getVeName() {
-        return veName;
-    }
-
-    public void setVeName(String veName) {
-        this.veName = veName;
-    }
 
     public String getId() {
         return id;
@@ -148,150 +112,75 @@ public class ElevatorEvent extends Model<ElevatorEvent> {
         this.isDeleted = isDeleted;
     }
 
-    public String getVeOccurtime() {
-        return veOccurtime;
+    public String getEventName() {
+        return eventName;
     }
 
-    public void setVeOccurtime(String veOccurtime) {
-        this.veOccurtime = veOccurtime;
+    public void setEventName(String eventName) {
+        this.eventName = eventName;
     }
 
-    public String getVeEndtime() {
-        return veEndtime;
+    public String getEventContent() {
+        return eventContent;
     }
 
-    public void setVeEndtime(String veEndtime) {
-        this.veEndtime = veEndtime;
+    public void setEventContent(String eventContent) {
+        this.eventContent = eventContent;
     }
 
-    public String getVeVeid() {
-        return veVeid;
+    public Integer getEventType() {
+        return eventType;
     }
 
-    public void setVeVeid(String veVeid) {
-        this.veVeid = veVeid;
+    public void setEventType(Integer eventType) {
+        this.eventType = eventType;
     }
 
-    public Integer getVeOccurstus() {
-        return veOccurstus;
+    public Integer getEventMethodid() {
+        return eventMethodid;
     }
 
-    public void setVeOccurstus(Integer veOccurstus) {
-        this.veOccurstus = veOccurstus;
+    public void setEventMethodid(Integer eventMethodid) {
+        this.eventMethodid = eventMethodid;
     }
 
-    public Integer getVeExigrncystus() {
-        return veExigrncystus;
+    public Integer getEventReport() {
+        return eventReport;
     }
 
-    public void setVeExigrncystus(Integer veExigrncystus) {
-        this.veExigrncystus = veExigrncystus;
+    public void setEventReport(Integer eventReport) {
+        this.eventReport = eventReport;
     }
 
-    public Integer getVeAccident() {
-        return veAccident;
+    public String getEventLongitude() {
+        return eventLongitude;
     }
 
-    public void setVeAccident(Integer veAccident) {
-        this.veAccident = veAccident;
+    public void setEventLongitude(String eventLongitude) {
+        this.eventLongitude = eventLongitude;
     }
 
-    public String getVeTitle() {
-        return veTitle;
+    public String getEventLatitude() {
+        return eventLatitude;
     }
 
-    public void setVeTitle(String veTitle) {
-        this.veTitle = veTitle;
+    public void setEventLatitude(String eventLatitude) {
+        this.eventLatitude = eventLatitude;
     }
 
-    public String getVeContent() {
-        return veContent;
+    public String getUid() {
+        return uid;
     }
 
-    public void setVeContent(String veContent) {
-        this.veContent = veContent;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
-    public String getVeType() {
-        return veType;
+    public String getVeName() {
+        return veName;
     }
 
-    public void setVeType(String veType) {
-        this.veType = veType;
-    }
-
-    public String getVeUserid() {
-        return veUserid;
-    }
-
-    public void setVeUserid(String veUserid) {
-        this.veUserid = veUserid;
-    }
-
-    public String getVeSystemid() {
-        return veSystemid;
-    }
-
-    public void setVeSystemid(String veSystemid) {
-        this.veSystemid = veSystemid;
-    }
-
-    public String getVeResult() {
-        return veResult;
-    }
-
-    public void setVeResult(String veResult) {
-        this.veResult = veResult;
-    }
-
-    public String getVeReport() {
-        return veReport;
-    }
-
-    public void setVeReport(String veReport) {
-        this.veReport = veReport;
-    }
-
-    public String getVeEetypeid() {
-        return veEetypeid;
-    }
-
-    public void setVeEetypeid(String veEetypeid) {
-        this.veEetypeid = veEetypeid;
-    }
-
-    public String getVeTetypeid() {
-        return veTetypeid;
-    }
-
-    public void setVeTetypeid(String veTetypeid) {
-        this.veTetypeid = veTetypeid;
-    }
-
-    public ElevatorEvent() {
-
-    }
-
-    public ElevatorEvent(String id, Date createTime, Date updateTime, String isDeleted, String veOccurtime, String veEndtime, String veVeid, Integer veOccurstus, Integer veExigrncystus, Integer veAccident, String veTitle, String veContent, String veType, String veUserid, String veSystemid, String veResult, String veReport, String veEetypeid, String veTetypeid, String veName) {
-        this.id = id;
-        this.createTime = createTime;
-        this.updateTime = updateTime;
-        this.isDeleted = isDeleted;
-        this.veOccurtime = veOccurtime;
-        this.veEndtime = veEndtime;
-        this.veVeid = veVeid;
-        this.veOccurstus = veOccurstus;
-        this.veExigrncystus = veExigrncystus;
-        this.veAccident = veAccident;
-        this.veTitle = veTitle;
-        this.veContent = veContent;
-        this.veType = veType;
-        this.veUserid = veUserid;
-        this.veSystemid = veSystemid;
-        this.veResult = veResult;
-        this.veReport = veReport;
-        this.veEetypeid = veEetypeid;
-        this.veTetypeid = veTetypeid;
+    public void setVeName(String veName) {
         this.veName = veName;
     }
 
@@ -302,21 +191,14 @@ public class ElevatorEvent extends Model<ElevatorEvent> {
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
                 ", isDeleted='" + isDeleted + '\'' +
-                ", veOccurtime='" + veOccurtime + '\'' +
-                ", veEndtime='" + veEndtime + '\'' +
-                ", veVeid='" + veVeid + '\'' +
-                ", veOccurstus=" + veOccurstus +
-                ", veExigrncystus=" + veExigrncystus +
-                ", veAccident=" + veAccident +
-                ", veTitle='" + veTitle + '\'' +
-                ", veContent='" + veContent + '\'' +
-                ", veType='" + veType + '\'' +
-                ", veUserid='" + veUserid + '\'' +
-                ", veSystemid='" + veSystemid + '\'' +
-                ", veResult='" + veResult + '\'' +
-                ", veReport='" + veReport + '\'' +
-                ", veEetypeid='" + veEetypeid + '\'' +
-                ", veTetypeid='" + veTetypeid + '\'' +
+                ", eventName='" + eventName + '\'' +
+                ", eventContent='" + eventContent + '\'' +
+                ", eventType=" + eventType +
+                ", eventMethodid=" + eventMethodid +
+                ", eventReport=" + eventReport +
+                ", eventLongitude='" + eventLongitude + '\'' +
+                ", eventLatitude='" + eventLatitude + '\'' +
+                ", uid='" + uid + '\'' +
                 ", veName='" + veName + '\'' +
                 '}';
     }

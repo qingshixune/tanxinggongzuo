@@ -39,16 +39,12 @@ public class Video extends Model<Video> {
     private String isDeleted;
 
     @ApiModelProperty(value="视频设备id")
-    @TableField("ve_id")
-    private String veId;
+    @TableField("eqid")
+    private String eqid;
 
     @ApiModelProperty(value="录像地址")
     @TableField("video_url")
     private String videoUrl;
-
-    @ApiModelProperty(value="录像预警状态")
-    @TableField("video_status")
-    private Integer videoStatus;
 
     @ApiModelProperty(value="录像时长")
     @TableField("video_long")
@@ -56,7 +52,11 @@ public class Video extends Model<Video> {
 
     @ApiModelProperty(value="录像时间")
     @TableField("video_time")
-    private Integer videoTime;
+    private String videoTime;
+
+    @ApiModelProperty(value="录像描述")
+    @TableField("video_describe")
+    private String videoDescribe;
 
     @ApiModelProperty(value="设备名称")
     @TableField(exist = false)
@@ -68,22 +68,6 @@ public class Video extends Model<Video> {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public Integer getVideoLong() {
-        return videoLong;
-    }
-
-    public void setVideoLong(Integer videoLong) {
-        this.videoLong = videoLong;
-    }
-
-    public String getVeName() {
-        return veName;
-    }
-
-    public void setVeName(String veName) {
-        this.veName = veName;
     }
 
     public Date getCreateTime() {
@@ -110,12 +94,12 @@ public class Video extends Model<Video> {
         this.isDeleted = isDeleted;
     }
 
-    public String getVeId() {
-        return veId;
+    public String getEqid() {
+        return eqid;
     }
 
-    public void setVeId(String veId) {
-        this.veId = veId;
+    public void setEqid(String eqid) {
+        this.eqid = eqid;
     }
 
     public String getVideoUrl() {
@@ -126,31 +110,35 @@ public class Video extends Model<Video> {
         this.videoUrl = videoUrl;
     }
 
-    public Integer getVideoStatus() { return videoStatus; }
+    public Integer getVideoLong() {
+        return videoLong;
+    }
 
-    public void setVideoStatus(Integer videoStatus) { this.videoStatus = videoStatus; }
+    public void setVideoLong(Integer videoLong) {
+        this.videoLong = videoLong;
+    }
 
-    public Integer getVideoTime() {
+    public String getVideoTime() {
         return videoTime;
     }
 
-    public void setVideoTime(Integer videoTime) {
+    public void setVideoTime(String videoTime) {
         this.videoTime = videoTime;
     }
 
-    public Video() {
+    public String getVideoDescribe() {
+        return videoDescribe;
     }
 
-    public Video(String id, Date createTime, Date updateTime, String isDeleted, String veId, String videoUrl, Integer videoStatus, Integer videoLong, Integer videoTime, String veName) {
-        this.id = id;
-        this.createTime = createTime;
-        this.updateTime = updateTime;
-        this.isDeleted = isDeleted;
-        this.veId = veId;
-        this.videoUrl = videoUrl;
-        this.videoStatus = videoStatus;
-        this.videoLong = videoLong;
-        this.videoTime = videoTime;
+    public void setVideoDescribe(String videoDescribe) {
+        this.videoDescribe = videoDescribe;
+    }
+
+    public String getVeName() {
+        return veName;
+    }
+
+    public void setVeName(String veName) {
         this.veName = veName;
     }
 
@@ -161,11 +149,11 @@ public class Video extends Model<Video> {
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
                 ", isDeleted='" + isDeleted + '\'' +
-                ", veId='" + veId + '\'' +
+                ", eqid='" + eqid + '\'' +
                 ", videoUrl='" + videoUrl + '\'' +
-                ", videoStatus=" + videoStatus +
                 ", videoLong=" + videoLong +
-                ", videoTime=" + videoTime +
+                ", videoTime='" + videoTime + '\'' +
+                ", videoDescribe='" + videoDescribe + '\'' +
                 ", veName='" + veName + '\'' +
                 '}';
     }

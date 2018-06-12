@@ -1,29 +1,25 @@
 package cn.gov.zunyi.video.model;
 
 import com.baomidou.mybatisplus.activerecord.Model;
-import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
 
 /**
  * <p>
- * 视频源列表类
+ * 事件上报方式类
  * </p>
  *
  * @author ZTY
  * @since 2018-6-6
  */
-@ApiModel("视频源列表")
-@TableName("ve_type")
-public class VeType extends Model<VeType> {
+@ApiModel("事件上报方式")
+@TableName("ve_event_method")
+public class VeEventMethod extends Model<VeEventMethod> {
 
-    @TableField("id")
     private Integer id;
 
-    @TableField("name")
     private String name;
 
     public Integer getId() {

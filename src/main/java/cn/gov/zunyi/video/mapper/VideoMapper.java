@@ -18,4 +18,8 @@ public interface VideoMapper extends BaseMapper<Video> {
                          @Param("typeids") List<String> typeids,
                          @Param("addressid") int addressid,
                          @Param("veStatus") int veStatus);
+
+    List<Video> selectVideoByDateBetween(Page<Video> page,
+                                         @Param("beforeDate") String beforeDate,
+                                         @Param("afterDate") String afterDate);
 }

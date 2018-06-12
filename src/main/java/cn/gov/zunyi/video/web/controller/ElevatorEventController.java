@@ -35,16 +35,11 @@ public class ElevatorEventController extends BaseController {
         Map<String,Object> map = new HashMap<>();
         try {
             if(elevatorEvent.getId() == null){
-                if(StringUtils.isNoneBlank(elevatorEvent.getVeTitle())){
-                    elevatorEvent.setVeTitle(elevatorEvent.getVeTitle().trim());
+                if(StringUtils.isNoneBlank(elevatorEvent.getEventName())){
+                    elevatorEvent.setEventName(elevatorEvent.getEventName().trim());
                 }else{
                     map.put("status","400");
                     map.put("message","事件标题不能为空");
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
-                }
-                if(!StringUtils.isNoneBlank(elevatorEvent.getVeOccurtime())){
-                    map.put("status","400");
-                    map.put("message","事件发生时间不能为空");
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
                 }
                 elevatorEvent.setCreateTime(new Date(System.currentTimeMillis()));

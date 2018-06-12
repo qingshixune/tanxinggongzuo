@@ -170,7 +170,7 @@ public class UserController extends BaseController {
 			User user = userService.selectById(Id);
 			if (null == user) {
 				map.put("isLive", 0);
-				map.put("enabled", false);
+				map.put("enabled", 0);
 				return ResponseEntity.ok(map);
 			}
 			map.put("enabled", user.getEnabled());

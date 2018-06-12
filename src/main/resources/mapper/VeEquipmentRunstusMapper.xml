@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.gov.zunyi.video.mapper.VeEquipmentRunstusMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.gov.zunyi.video.model.VeEquipmentRunstus">
+        <id column="id" property="id" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="is_deleted" property="isDeleted" />
+        <result column="runstart_time" property="runstartTime" />
+        <result column="runend_time" property="runendTime" />
+        <result column="is_warningstus" property="isWarningstus" />
+        <result column="eqid" property="eqid" />
+    </resultMap>
+    
+    <select id="getVeEquipmentRunstusByEqid" resultMap="BaseResultMap">
+        select * from ve_equipment_runstus where eqid = #{eqid}
+    </select>
+</mapper>

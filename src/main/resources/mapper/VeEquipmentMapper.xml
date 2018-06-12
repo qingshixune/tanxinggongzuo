@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.gov.zunyi.video.mapper.VeEquipmentMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.gov.zunyi.video.model.VeEquipment">
+        <id column="id" property="id" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="is_deleted" property="isDeleted" />
+        <result column="ve_name" property="veName" />
+        <result column="address_name" property="veAddress" />
+        <result column="ve_specificadds" property="veSpecificadds" />
+        <result column="ve_source" property="veSource" />
+        <result column="ve_warningstus" property="veWarningstus" />
+        <result column="ve_securitystus" property="veSecuritystus" />
+        <result column="ve_runstus" property="veRunstus" />
+        <result column="ve_latitude" property="veLatitude" />
+        <result column="ve_longitude" property="veLongitude" />
+        <result column="type_name" property="veType" />
+        <result column="video_url" property="videoUrl" />
+        <result column="ve_describe" property="veDescribe" />
+    </resultMap>
+
+    <resultMap id="BaseResultMap1" type="cn.gov.zunyi.video.model.VeEquipment">
+        <id column="id" property="id" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="is_deleted" property="isDeleted" />
+        <result column="ve_name" property="veName" />
+        <result column="address_name" property="veAddress" />
+        <result column="ve_specificadds" property="veSpecificadds" />
+        <result column="ve_source" property="veSource" />
+        <result column="ve_warningstus" property="veWarningstus" />
+        <result column="ve_securitystus" property="veSecuritystus" />
+        <result column="ve_runstus" property="veRunstus" />
+        <result column="ve_latitude" property="veLatitude" />
+        <result column="ve_longitude" property="veLongitude" />
+        <result column="type_name" property="veType" />
+        <result column="video_url" property="videoUrl" />
+        <result column="ve_describe" property="veDescribe" />
+        <collection property="veEquipmentRunstus" ofType="cn.gov.zunyi.video.model.VeEquipmentRunstus"
+                    column="id" select="cn.gov.zunyi.video.mapper.VeEquipmentRunstusMapper.getVeEquipmentRunstusByEqid" />
+    </resultMap>
+
+    <select id="selectVeAll" resultMap="BaseResultMap1">
+       SELECT
+           eq.id,eq.create_time,eq.update_time,eq.ve_name,eq.ve_specificadds,eq.ve_source,eq.ve_warningstus,
+           eq.ve_securitystus,eq.ve_runstus,eq.ve_latitude,eq.ve_longitude,eq.video_url,eq.ve_describe,
+           ty.name AS type_name,
+           ad.name AS address_name
+       FROM
+           ve_equipment AS eq
+           LEFT JOIN ve_type AS ty ON eq.ve_typeid = ty.id
+           LEFT JOIN ve_address AS ad ON eq.ve_addressid = ad.id
+       WHERE
+           eq.is_deleted = 0
+    </select>
+    
+    <select id="selectVeAllByType" resultMap="BaseResultMap1">
+        SELECT
+            eq.id,eq.create_time,eq.update_time,eq.ve_name,eq.ve_specificadds,eq.ve_source,eq.ve_warningstus,
+            eq.ve_securitystus,eq.ve_runstus,eq.ve_latitude,eq.ve_longitude,eq.video_url,eq.ve_describe,
+            ty.name AS type_name,
+            ad.name AS address_name
+        FROM
+            ve_equipment AS eq
+            LEFT JOIN ve_type AS ty ON eq.ve_typeid = ty.id
+            LEFT JOIN ve_address AS ad ON eq.ve_addressid = ad.id
+        WHERE
+            eq.ve_typeid = #{veType} AND eq.is_deleted = 0
+    </select>
+
+    <select id="getVeList" resultMap="BaseResultMap">
+        SELECT
+            eq.id,eq.create_time,eq.update_time,eq.ve_name,eq.ve_specificadds,eq.ve_source,eq.ve_warningstus,
+            eq.ve_securitystus,eq.ve_runstus,eq.ve_latitude,eq.ve_longitude,eq.video_url,eq.ve_describe
+        FROM
+            ve_equipment AS eq
+        <where>
+            eq.is_deleted = 0 AND eq.ve_runstus = 1 AND eq.ve_securitystus = 0
+            <if test="beforeDate != null and afterDate != null and beforeDate !='' and afterDate != ''">
+                AND eq.create_time BETWEEN #{beforeDate} AND #{afterDate}
+            </if>
+            <if test="addressid != 0">
+                AND eq.ve_addressid = #{addressid}
+            </if>
+            <if test="veStatus != 0">
+                AND eq.ve_warningstus = #{veStatus}
+            </if>
+            <if test="typeids != null">
+                <foreach collection="typeids" item="typeid" open="and ("
+                         close=")" separator="or">
+                    eq.ve_typeid = #{typeid}
+                </foreach>
+            </if>
+            <if test="veNames != null">
+                <foreach collection="veNames" item="veName" open="and ("
+                         close=")" separator="or">
+                    eq.ve_name = #{veName}
+                </foreach>
+            </if>
+            ORDER BY
+                eq.create_time DESC
+        </where>
+    </select>
+</mapper>

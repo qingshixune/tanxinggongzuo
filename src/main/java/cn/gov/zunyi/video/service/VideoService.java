@@ -38,21 +38,7 @@ public class VideoService extends ServiceImpl<VideoMapper,Video> {
         return veCount;
     }
 
-    public List<Video> getVideo(Page<Video> page,String typeid, int addressid, int veStatus) {
-        List<String> typeids = new ArrayList<>();
-        if(!typeid.equals("0") && typeid != null){
-            for(int i = 0;i < typeid.length();i++){
-                String type = new String();
-                if(i == typeid.length()){
-                    type = typeid.substring(i);
-                }else {
-                    type = typeid.substring(i, i + 1);
-                }
-                typeids.add(type);
-            }
-        }else{
-            typeids = null;
-        }
-        return videoMapper.getVideo(page,typeids,addressid,veStatus);
+    public List<Video> getVideoByDateBetween(Page<Video> page, String beforeDate, String afterDate) {
+        return videoMapper.selectVideoByDateBetween(page,beforeDate,afterDate);
     }
 }
