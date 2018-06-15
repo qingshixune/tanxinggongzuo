@@ -2,6 +2,7 @@ package cn.gov.zunyi.video.web.controller;
 
 import cn.gov.zunyi.video.model.*;
 import cn.gov.zunyi.video.service.VeAddressService;
+import cn.gov.zunyi.video.service.VeEquipmentRunstusService;
 import cn.gov.zunyi.video.service.VeEquipmentService;
 import cn.gov.zunyi.video.service.VeTypeService;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
@@ -33,6 +34,8 @@ public class VeEquipmentController extends BaseController {
     private VeTypeService veTypeService;
     @Autowired
     private VeAddressService veAddressService;
+    @Autowired
+    private VeEquipmentRunstusService veEquipmentRunstusService;
 
     /**
      * 查询视频源列表
@@ -119,10 +122,6 @@ public class VeEquipmentController extends BaseController {
     /**
      * 根据视频源分类查询视频设备信息,前台大屏展示
      */
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "_index", value = "分页起始偏移量", required = false, paramType = "query", dataType = "Integer"),
-            @ApiImplicitParam(name = "_size", value = "返回条数", required = false, paramType = "query", dataType = "Integer")
-    })
     @RequestMapping(value = "/getVe",method = RequestMethod.GET)
     public ResponseEntity<Map<String,Object>> listVeByType(@RequestParam("veType") Integer veType){
         Map<String,Object> map = new HashMap<>();
@@ -130,13 +129,13 @@ public class VeEquipmentController extends BaseController {
         VeCount veCount = null;
         try {
             if (veType == 0){ //默认查询所有设备
-                List<VeEquipment> veEquipments = veEquipmentService.getVeAll(page);
+                List<VeEquipment> veEquipments = veEquipmentService.getVeAll();
                 veCount = veEquipmentService.veCount(veEquipments);
                 map.put("veCount",veCount);
                 map.put("veEquipments", veEquipments);
                 return ResponseEntity.ok(map);
             }else{ //根据分类id不同查询不同的设备信息
-                List<VeEquipment> veEquipments = veEquipmentService.getVeAllByType(page,veType);
+                List<VeEquipment> veEquipments = veEquipmentService.getVeAllByType(veType);
                 veCount = veEquipmentService.veCount(veEquipments);
                 map.put("veCount",veCount);
                 map.put("veInfos", veEquipments);
@@ -158,12 +157,12 @@ public class VeEquipmentController extends BaseController {
                                                       @RequestParam("addressid") int addressid,
                                                       @RequestParam("veStatus") int veStatus,
                                                       @RequestParam(value = "beforeDate",required = false) String beforeDate,
-                                                      @RequestParam(value = "after",required = false) String afterDate,
+                                                      @RequestParam(value = "afterDate",required = false) String afterDate,
                                                       @RequestParam(value = "veNames",required = false) String[] veNames){
         Map<String,Object> map = new HashMap<>();
         Page<VeEquipment> page = this.getPage();
         try {
-            List<VeEquipment> veEquipments = veEquipmentService.getVeList(page,typeid,addressid,veStatus,beforeDate,afterDate,veNames);
+            Page<VeEquipment> veEquipments = veEquipmentService.getVeList(page,typeid,addressid,veStatus,beforeDate,afterDate,veNames);
             map.put("veEquipments",veEquipments);
             return ResponseEntity.ok(map);
         }catch (Exception e){
@@ -173,6 +172,35 @@ public class VeEquipmentController extends BaseController {
         }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
     }
+
+    /**
+     * 查询单个视频设备
+     */
+    @RequestMapping(value = "/getVeone",method = RequestMethod.GET)
+    public ResponseEntity<Map<String,Object>> getVeoneById(@RequestParam("id") String id){
+        Map<String,Object> map = new HashMap<>();
+        Wrapper<VeEquipmentRunstus> ew = new EntityWrapper<>();
+        try {
+            VeEquipment veEquipment = veEquipmentService.selectById(id);
+            if(veEquipment == null){
+                map.put("status","500");
+                map.put("message","服务器忙！");
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(map);
+            }
+            ew.eq("eqid",veEquipment.getId());
+            ew.eq("is_deleted","0");
+            List<VeEquipmentRunstus> veEquipmentRunstuses = veEquipmentRunstusService.selectList(ew);
+            if (veEquipmentRunstuses.size()>0){
+                veEquipment.setVeEquipmentRunstus(veEquipmentRunstuses);
+            }
+            map.put("veEquipment",veEquipment);
+            return ResponseEntity.ok(map);
+        }catch (Exception e){
+            logger.error(e.toString());
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+    }
+
 
 
 

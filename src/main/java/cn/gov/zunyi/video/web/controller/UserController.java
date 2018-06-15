@@ -18,6 +18,8 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.shiro.SecurityUtils;
@@ -183,12 +185,6 @@ public class UserController extends BaseController {
 		return ResponseEntity.ok(map);
 	}
 
-
-
-
-
-
-
 	/**
 	 * 查询用户列表
 	 *
@@ -200,7 +196,7 @@ public class UserController extends BaseController {
 		try {
 			if (null != ew) {
 				ew.orderBy("id", false);
-				ew.eq("enabled", 1);
+				ew.eq("is_live", 1);
 				ew.eq("user_type", 3);//获取微信用户
 				//1是 注册用户  0是未注册用户
 				if (!StringUtils.isNotBlank(type)||type.equals("")) {
@@ -232,47 +228,21 @@ public class UserController extends BaseController {
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
 	}
 
-
-
-
 	/**
 	 * 查询用户列表
-	 *
-	 * @param column
-	 * @param mobile
-	 * @return
 	 */
+	@ApiImplicitParams({
+			@ApiImplicitParam(name = "_index", value = "分页起始偏移量", required = false, paramType = "query", dataType = "Integer"),
+			@ApiImplicitParam(name = "_size", value = "返回条数", required = false, paramType = "query", dataType = "Integer")
+	})
 	@RequestMapping(value = "/getUserList", method = RequestMethod.GET)
 	@RequiresPermissions("/user/getUserList")
-	public ResponseEntity<Page<User>> queryUserList( String column, String keyword, Integer isLive, String mobile,
-													 String username, EntityWrapper<User> ew) {
+	public ResponseEntity<Page<User>> queryUserList(String name) {
+		Page<User> page = this.getPage();
 		try {
-			if (null != ew) {
-				ew.orderBy("id", false);
-				ew.eq("enabled", 1);
-				ew.eq("user_type", 2);//获取管理人员的
-				if (StringUtils.isNotBlank(keyword)) {
-					if ("id".equals(column)) {
-						ew.eq(column, keyword);
-					} else {
-						ew.like(column, keyword);
-					}
-				}
-				if (isLive != null) {
-					ew.eq("is_live", isLive);
-				}
-				if (StringUtils.isNotBlank(mobile)) {
-					ew.like("mobile", mobile);
-				}
-				if (StringUtils.isNotBlank(username)) {
-					ew.like("username", username);
-				}
-			} else {
-				ew = new EntityWrapper<User>();
-				ew.orderBy("id", false);
-			}
-			Page<User> page = getPage();
-			return ResponseEntity.ok(userService.selectPage(page, ew));
+			Page<User> pages = userService.selectUserList(page,name);
+
+			return ResponseEntity.ok(pages);
 		} catch (Exception e) {
 			logger.error("查询用户列表出错!", e);
 		}
@@ -402,7 +372,7 @@ public class UserController extends BaseController {
 		try {
 			User entity = new User();
 			entity.setId(Integer.valueOf(userId));
-			entity.setIsLive(0);
+			entity.setEnabled(false);
 			boolean ret = this.userService.updateById(entity);
 			if (!ret) {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -425,7 +395,7 @@ public class UserController extends BaseController {
 		try {
 			User entity = new User();
 			entity.setId(Integer.valueOf(userId));
-			entity.setEnabled(false);
+			entity.setIsLive(0);
 			boolean ret = this.userService.updateById(entity);
 			if (!ret) {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -444,7 +414,7 @@ public class UserController extends BaseController {
 		try {
 			User entity = new User();
 			entity.setId(Integer.valueOf(userId));
-			entity.setIsLive(1);
+			entity.setEnabled(true);
 			boolean ret = this.userService.updateById(entity);
 			if (!ret) {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -995,6 +965,31 @@ public class UserController extends BaseController {
 		return null;
 	}
 
+	@RequestMapping(value = "/resetPassword",method = RequestMethod.PUT)
+	@RequiresPermissions("/user/resetPassword")
+	public ResponseEntity<Map<String,Object>> resetPassword(){
+		User user = (User) SecurityUtils.getSubject().getPrincipal();
+		Map<String,Object> map = new HashMap<>();
+		try {
+			byte[] passwordSalt = user.getPasswordSalt();
+			user.setPasswordHash(SHA256PasswordEncryptionService.createPasswordHash("123456", passwordSalt));
+			user.setUpdateTime(new Date(System.currentTimeMillis()));
+			boolean rel = false;
+			rel = userService.updateById(user);
+			if(!rel){
+				map.put("status", 500);
+				map.put("message", "服务器繁忙");
+				return ResponseEntity.status(HttpStatus.CREATED).body(map);
+			}
+			map.put("status", 201);
+			map.put("message","已重置：密码为123456");
+			return ResponseEntity.ok(map);
+		}catch (Exception e){
+
+		}
+
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+	}
 
 }
 

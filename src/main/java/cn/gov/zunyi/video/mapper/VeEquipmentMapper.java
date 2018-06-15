@@ -8,9 +8,9 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface VeEquipmentMapper extends BaseMapper<VeEquipment> {
-    List<VeEquipment> selectVeAll(Page<VeEquipment> page);
+    List<VeEquipment> selectVeAll();
 
-    List<VeEquipment> selectVeAllByType(Page<VeEquipment> page, Integer veType);
+    List<VeEquipment> selectVeAllByType(Integer veType);
 
     List<VeEquipment> getVeList(Page<VeEquipment> page, @Param("typeids") List<String> typeids,
                                 @Param("addressid") int addressid,

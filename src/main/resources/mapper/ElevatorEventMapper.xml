@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.gov.zunyi.video.mapper.ElevatorEventMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.gov.zunyi.video.model.ElevatorEvent">
+        <id column="id" property="id" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="is_deleted" property="isDeleted" />
+        <result column="event_name" property="eventName" />
+        <result column="event_content" property="eventContent" />
+        <result column="event_status" property="eventStatus" />
+        <result column="event_type" property="eventType" />
+        <result column="event_report" property="eventReport" />
+        <result column="event_longitude" property="eventLongitude" />
+        <result column="event_latitude" property="eventLatitude" />
+        <result column="uName" property="uName" />
+        <result column="veName" property="veName" />
+        <result column="event_time" property="eventTime" />
+        <result column="address" property="address" />
+        <result column="typeName" property="typeName" />
+        <result column="veUrl" property="veUrl" />
+    </resultMap>
+    
+    <select id="selectEvent" resultMap="BaseResultMap">
+        SELECT
+            el.id,el.event_name,el.event_content,el.event_status,el.event_longitude,el.event_latitude,el.event_time,
+            eq.ve_name AS veName,eq.video_url AS veUrl,eq.ve_specificadds as address,
+            ty.name AS typeName
+        FROM
+            ve_equipment_event AS ee
+            LEFT JOIN ve_event AS el ON ee.eid = el.id
+            LEFT JOIN ve_equipment AS eq ON eq.id = ee.eqid
+            LEFT JOIN ve_type AS ty ON eq.ve_typeid = ty.id
+        <where>
+            el.is_deleted = 0
+            <if test="id != null">
+                AND el.id = #{id}
+            </if>
+            <if test="eventStatus != null">
+                AND el.event_status = #{eventStatus}
+            </if>
+            <if test="typeids != null">
+                <foreach collection="typeids" item="typeid" open="and ("
+                         close=")" separator="or">
+                    eq.ve_typeid = #{typeid}
+                </foreach>
+            </if>
+            <if test="beforeDate != null and afterDate != null and beforeDate !='' and afterDate != ''">
+                AND el.event_time BETWEEN #{beforeDate} AND #{afterDate}
+            </if>
+            ORDER BY
+                el.event_time DESC
+        </where>
+    </select>
+</mapper>

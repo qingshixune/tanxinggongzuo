@@ -114,10 +114,10 @@ public class User extends Model<User> implements Serializable, AuthCachePrincipa
     /**
      * 状态： 1 正常 0 逻辑删除
      */
-    private boolean enabled;
+    private Boolean enabled;
 
-
-
+    @TableField(exist = false)
+    private String rolename;
 
     /**
      * 状态： 1 启用0  警用
@@ -325,11 +325,11 @@ public class User extends Model<User> implements Serializable, AuthCachePrincipa
         this.district = district;
     }
 
-    public boolean getEnabled() {
+    public Boolean getEnabled() {
         return enabled;
     }
 
-    public void setEnabled(boolean enabled) {
+    public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
     }
 
@@ -422,6 +422,14 @@ public class User extends Model<User> implements Serializable, AuthCachePrincipa
     }
     public Integer getIsLive() {
         return isLive;
+    }
+
+    public String getRolename() {
+        return rolename;
+    }
+
+    public void setRolename(String rolename) {
+        this.rolename = rolename;
     }
 
     public void setIsLive(Integer isLive) {

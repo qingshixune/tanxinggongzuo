@@ -92,5 +92,6 @@ public interface UserMapper extends BaseMapper<User> {
 	List<User> getVisitCNumD(
             @Param(value = "startTime") String startTime,
             @Param(value = "endTime") String endTime);
-	
+
+    List<User> selectRolenameList(Page<User> page, String name);
 }

@@ -204,4 +204,7 @@ public class UserService extends ServiceImpl<UserMapper, User> {
 	}
 
 
+    public Page<User> selectUserList(Page<User> page, String name) {
+   		return page.setRecords(userMapper.selectRolenameList(page,name));
+    }
 }

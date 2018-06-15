@@ -38,13 +38,17 @@ public class ElevatorEvent extends Model<ElevatorEvent> {
     @TableField("is_deleted")
     private String isDeleted;
 
-    @ApiModelProperty(value="电梯事件名称")
+    @ApiModelProperty(value="事件名称")
     @TableField("event_name")
     private String eventName;
 
-    @ApiModelProperty(value="电梯事件内容")
+    @ApiModelProperty(value="事件内容")
     @TableField("event_content")
     private String eventContent;
+
+    @ApiModelProperty(value="事件处理状态")
+    @TableField("event_status")
+    private Integer eventStatus;
 
     /**
      * 0：电梯事件，1：交通事件
@@ -52,10 +56,6 @@ public class ElevatorEvent extends Model<ElevatorEvent> {
     @ApiModelProperty(value="事件类型")
     @TableField("event_type")
     private Integer eventType;
-
-    @ApiModelProperty(value="事件上报方式id")
-    @TableField("event_methodid")
-    private Integer eventMethodid;
 
     /**
      * 0：智能上报，1：人工上报
@@ -66,19 +66,39 @@ public class ElevatorEvent extends Model<ElevatorEvent> {
 
     @ApiModelProperty(value="经度")
     @TableField("event_longitude")
-    private String eventLongitude;
+    private Double eventLongitude;
 
     @ApiModelProperty(value="纬度")
     @TableField("event_latitude")
-    private String eventLatitude;
+    private Double eventLatitude;
 
     @ApiModelProperty(value="上报人id")
     @TableField("uid")
-    private String uid;
+    private Integer uid;
+
+    @ApiModelProperty(value="发现事件的时间")
+    @TableField("event_time")
+    private String eventTime;
 
     @ApiModelProperty(value="视频设备名字")
     @TableField(exist = false)
     private String veName;
+
+    @ApiModelProperty(value="上报人名字")
+    @TableField(exist = false)
+    private String uName;
+
+    @ApiModelProperty(value="事件发生地址")
+    @TableField(exist = false)
+    private String address;
+
+    @ApiModelProperty(value="事件所属视频源")
+    @TableField(exist = false)
+    private String typeName;
+
+    @ApiModelProperty(value="事件所属视频地址")
+    @TableField(exist = false)
+    private String veUrl;
 
     public String getId() {
         return id;
@@ -136,14 +156,6 @@ public class ElevatorEvent extends Model<ElevatorEvent> {
         this.eventType = eventType;
     }
 
-    public Integer getEventMethodid() {
-        return eventMethodid;
-    }
-
-    public void setEventMethodid(Integer eventMethodid) {
-        this.eventMethodid = eventMethodid;
-    }
-
     public Integer getEventReport() {
         return eventReport;
     }
@@ -152,27 +164,27 @@ public class ElevatorEvent extends Model<ElevatorEvent> {
         this.eventReport = eventReport;
     }
 
-    public String getEventLongitude() {
+    public Double getEventLongitude() {
         return eventLongitude;
     }
 
-    public void setEventLongitude(String eventLongitude) {
+    public void setEventLongitude(Double eventLongitude) {
         this.eventLongitude = eventLongitude;
     }
 
-    public String getEventLatitude() {
+    public Double getEventLatitude() {
         return eventLatitude;
     }
 
-    public void setEventLatitude(String eventLatitude) {
+    public void setEventLatitude(Double eventLatitude) {
         this.eventLatitude = eventLatitude;
     }
 
-    public String getUid() {
+    public Integer getUid() {
         return uid;
     }
 
-    public void setUid(String uid) {
+    public void setUid(Integer uid) {
         this.uid = uid;
     }
 
@@ -184,6 +196,38 @@ public class ElevatorEvent extends Model<ElevatorEvent> {
         this.veName = veName;
     }
 
+    public String getEventTime() {
+        return eventTime;
+    }
+
+    public void setEventTime(String eventTime) {
+        this.eventTime = eventTime;
+    }
+
+    public String getuName() {
+        return uName;
+    }
+
+    public void setuName(String uName) {
+        this.uName = uName;
+    }
+
+    public Integer getEventStatus() {
+        return eventStatus;
+    }
+
+    public void setEventStatus(Integer eventStatus) {
+        this.eventStatus = eventStatus;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     @Override
     public String toString() {
         return "ElevatorEvent{" +
@@ -193,14 +237,35 @@ public class ElevatorEvent extends Model<ElevatorEvent> {
                 ", isDeleted='" + isDeleted + '\'' +
                 ", eventName='" + eventName + '\'' +
                 ", eventContent='" + eventContent + '\'' +
+                ", eventStatus=" + eventStatus +
                 ", eventType=" + eventType +
-                ", eventMethodid=" + eventMethodid +
                 ", eventReport=" + eventReport +
-                ", eventLongitude='" + eventLongitude + '\'' +
-                ", eventLatitude='" + eventLatitude + '\'' +
-                ", uid='" + uid + '\'' +
+                ", eventLongitude=" + eventLongitude +
+                ", eventLatitude=" + eventLatitude +
+                ", uid=" + uid +
+                ", eventTime='" + eventTime + '\'' +
                 ", veName='" + veName + '\'' +
+                ", uName='" + uName + '\'' +
+                ", address='" + address + '\'' +
+                ", typeName='" + typeName + '\'' +
+                ", veUrl='" + veUrl + '\'' +
                 '}';
+    }
+
+    public String getVeUrl() {
+        return veUrl;
+    }
+
+    public void setVeUrl(String veUrl) {
+        this.veUrl = veUrl;
+    }
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
     }
 
     @Override

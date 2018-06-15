@@ -33,7 +33,7 @@
 		<result column="email" property="email" />
 		<result column="role_id" property="roleId" />
 		<result column="user_type" property="userType" />
-		
+		<result column="rolename" property="rolename" />
 		<result column="OPEN_ID" property="openId" />
 		<result column="CERTIFICATES_ID" property="certificatesId" />
 	</resultMap>
@@ -63,6 +63,26 @@
 			and  ml.news_id=#{newsId} 
 		</if>
 		ORDER BY ml.create_time
+	</select>
+
+	<select id="selectRolenameList" resultMap="BaseResultMap">
+		SELECT
+			tu.id,tu.username,tu.realname,tu.mobile,tu.enabled,
+			tu.role_id,tr.name as rolename
+		FROM
+			tb_user tu
+		LEFT JOIN
+			tb_role tr ON tu.role_id = tr.id
+		WHERE
+			tu.is_live = "1"
+			<if test="name!=null and name!='' ">
+				and (tu.username LIKE concat('%', #{name}, '%')
+				OR tu.realname LIKE concat('%', #{name}, '%')
+				OR tu.mobile LIKE concat('%', #{name}, '%')
+				OR tr.name LIKE concat('%', #{name}, '%'))
+			</if>
+			ORDER BY
+			tu.id DESC
 	</select>
 
 

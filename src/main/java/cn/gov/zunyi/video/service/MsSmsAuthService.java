@@ -90,7 +90,7 @@ public class MsSmsAuthService extends ServiceImpl<MsSmsAuthMapper, MsSmsAuth> {
     }
 
     /**
-     * 验证短信发送时间  一分钟之类一个手机号只能发送一条
+     * 验证短信发送时间  一分钟之内一个手机号只能发送一条
      *
      * @param phone
      */

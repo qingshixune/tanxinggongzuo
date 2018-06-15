@@ -132,7 +132,7 @@ public class LoginController {
 					&& (user.getUserType() == 1 || user.getUserType() == 0)) {
 				// 是俱乐部或者是个人用户
 				// 是俱乐部或者是个人用户
-				if (user.getIsLive() == null || user.getIsLive() != 1) {
+				if (user.getEnabled() == null || !user.getEnabled()) {
 					resultMap.put("status", 400);
 					resultMap.put("message", "您的账户已停用！请联系管理员");
 					return ResponseEntity.status(
@@ -194,7 +194,7 @@ public class LoginController {
 
 			if (user != null && user.getUserType() == 2) {
 				// 是俱乐部或者是个人用户
-				if (user.getIsLive() == null || user.getIsLive() != 1) {
+				if (user.getEnabled() == null || !user.getEnabled()) {
 					resultMap.put("status", 400);
 					resultMap.put("message", "您的账户已停用！请联系管理员");
 					return ResponseEntity.status(
@@ -238,23 +238,6 @@ public class LoginController {
 		}
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
 				resultMap);
-	}
-
-	/**
-	 * 退出
-	 *
-	 * @return
-	 */
-	@RequestMapping(value = "logout", method = RequestMethod.GET)
-	public ResponseEntity<Void> logout() {
-		try {
-			// 退出
-			SecurityUtils.getSubject().logout();
-			return ResponseEntity.status(HttpStatus.OK).build();
-		} catch (Exception e) {
-			logger.error("注销错误！", e);
-		}
-		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 	}
 
 	/**

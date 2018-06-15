@@ -88,18 +88,18 @@ public class VeEquipmentService extends ServiceImpl<VeEquipmentMapper,VeEquipmen
         return veLong;
     }
 
-    public List<VeEquipment> getVeAll(Page<VeEquipment> page) {
-        return veEquipmentMapper.selectVeAll(page);
+    public List<VeEquipment> getVeAll() {
+        return veEquipmentMapper.selectVeAll();
     }
 
-    public List<VeEquipment> getVeAllByType(Page<VeEquipment> page, Integer veType) {
-        return veEquipmentMapper.selectVeAllByType(page,veType);
+    public List<VeEquipment> getVeAllByType(Integer veType) {
+        return veEquipmentMapper.selectVeAllByType(veType);
     }
 
-    public List<VeEquipment> getVeList(Page<VeEquipment> page, String typeid, int addressid,
+    public Page<VeEquipment> getVeList(Page<VeEquipment> page, String typeid, int addressid,
                                  int veStatus, String beforeDate, String afterDate,String[] veNames) {
         List<String> typeids = new ArrayList<>();
-        if(!typeid.equals("0") && typeid != null){
+        if(typeid != null && !typeid.equals("0")){
             for(int i = 0;i < typeid.length();i++){
                 String type = new String();
                 if(i == typeid.length()){
@@ -112,6 +112,6 @@ public class VeEquipmentService extends ServiceImpl<VeEquipmentMapper,VeEquipmen
         }else{
             typeids = null;
         }
-        return veEquipmentMapper.getVeList(page,typeids,addressid,veStatus,beforeDate,afterDate,veNames);
+        return page.setRecords(veEquipmentMapper.getVeList(page,typeids,addressid,veStatus,beforeDate,afterDate,veNames));
     }
 }
