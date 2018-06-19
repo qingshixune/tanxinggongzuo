@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import io.swagger.annotations.Api;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,7 @@ import java.util.Map;
 @RestController
 public class EmergencyCommandController extends BaseController {
 
+    @Autowired
     private EmergencyCommandService emergencyCommandService;
 
     /**
@@ -56,7 +58,7 @@ public class EmergencyCommandController extends BaseController {
                 emergencyCommand.setTelephone(emergencyCommand.getTelephone().trim());
                 ew.eq("telephone",emergencyCommand.getTelephone());
                 EmergencyCommand em = emergencyCommandService.selectOne(ew);
-                if(ew != null){
+                if(em != null){
                     map.put("status","400");
                     map.put("message","固定电话已存在！");
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
@@ -72,7 +74,7 @@ public class EmergencyCommandController extends BaseController {
                 map.put("message","添加成功！");
                 return ResponseEntity.status(HttpStatus.CREATED).body(map);
         }catch (Exception e){
-            logger.error("新增应急指挥中心出错！");
+            logger.error(e.toString());
         }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
     }

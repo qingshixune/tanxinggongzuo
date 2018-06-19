@@ -39,6 +39,8 @@ public class ElevatorEventController extends BaseController {
     private VeEventFlowService veEventFlowService;
     @Autowired
     private VeEquipmentEventService veEquipmentEventService;
+    @Autowired
+    private UserService userService;
 
     /**
      * 新增或修改事件
@@ -72,6 +74,23 @@ public class ElevatorEventController extends BaseController {
                 elevatorEvent.setUid(user.getId());
                 elevatorEvent.setEventStatus(0);
                 boolean rel = false;
+                rel = elevatorEventService.insert(elevatorEvent);
+                if(!rel){
+                    map.put("status","500");
+                    map.put("message","服务器忙！");
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(map);
+                }
+
+                VeEquipmentEvent veEquipmentEvent = new VeEquipmentEvent();
+                veEquipmentEvent.setEqid(eqid);
+                veEquipmentEvent.setEid(elevatorEvent.getId());
+                veEquipmentEvent.setCreateTime(new Date(System.currentTimeMillis()));
+                rel = veEquipmentEventService.insert(veEquipmentEvent);
+                if(!rel){
+                    map.put("status","500");
+                    map.put("message","服务器忙！");
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(map);
+                }
 
                 if(img != null){
                     if(!FileTypeUtil.isImageByExtension(img.getOriginalFilename())){
@@ -84,24 +103,6 @@ public class ElevatorEventController extends BaseController {
                             map.put("status","400");
                             map.put("message","获取视频截图失败！");
                             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
-                        }
-
-                        rel = elevatorEventService.insert(elevatorEvent);
-                        if(!rel){
-                            map.put("status","500");
-                            map.put("message","服务器忙！");
-                            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(map);
-                        }
-
-                        VeEquipmentEvent veEquipmentEvent = new VeEquipmentEvent();
-                        veEquipmentEvent.setEqid(eqid);
-                        veEquipmentEvent.setEid(elevatorEvent.getId());
-                        veEquipmentEvent.setCreateTime(new Date(System.currentTimeMillis()));
-                        rel = veEquipmentEventService.insert(veEquipmentEvent);
-                        if(!rel){
-                            map.put("status","500");
-                            map.put("message","服务器忙！");
-                            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(map);
                         }
 
                         VeEnclosure veEnclosure = new VeEnclosure();
@@ -214,14 +215,28 @@ public class ElevatorEventController extends BaseController {
     /**
      * 根据事件id查询事件详细情况
      */
+    @RequestMapping(value = "/getEventDetails",method = RequestMethod.GET)
     public ResponseEntity<Map<String,Object>> getEventDetails(@RequestParam("id") String id){
         Map<String,Object> map = new HashMap<>();
         Wrapper<VeEnclosure> ew = new EntityWrapper<>();
         try {
             ElevatorEvent elevatorEvent = elevatorEventService.selectById(id);
-            ew.eq("appid",id);
-            List<VeEnclosure> veEnclosures = veEnclosureService.selectList(ew);
-            map.put("veEnclosures",veEnclosures);
+            if(elevatorEvent.getEventStatus() == 1){
+                VeEventFlow veEventFlow = veEventFlowService.selectByEid(id);
+                map.put("veEventFlow",veEventFlow);
+            }else if(elevatorEvent.getEventStatus() == 2){
+                VeEventFlow veEventFlow = veEventFlowService.selectByEid(id);
+                map.put("veEventFlow",veEventFlow);
+                ew.eq("appid",veEventFlow.getId());
+                List<VeEnclosure> veEnclosures = veEnclosureService.selectList(ew);
+                map.put("veEnclosures",veEnclosures);
+            }else if(elevatorEvent.getEventStatus() == 3){
+
+            }else{
+                ew.eq("appid",id);
+                List<VeEnclosure> veEnclosures = veEnclosureService.selectList(ew);
+                map.put("veEnclosures",veEnclosures);
+            }
             map.put("elevatorEvent",elevatorEvent);
             return ResponseEntity.ok(map);
         }catch (Exception e){
@@ -237,13 +252,22 @@ public class ElevatorEventController extends BaseController {
     public ResponseEntity<Map<String,Object>> manageEvent(VeEventFlow veEventFlow){
         Map<String,Object> map = new HashMap<>();
         Wrapper<VeEventFlow> ew = new EntityWrapper<>();
+        ElevatorEvent elevatorEvent = new ElevatorEvent();
         boolean rel = false;
         try {
-            if(veEventFlow.getProcessMode() == 0){
+            if(veEventFlow.getProcessMode() == 0){//转发给个人
                 veEventFlow.setCreateTime(new Date(System.currentTimeMillis()));
                 rel = veEventFlowService.insert(veEventFlow);
             }
+            if(!rel){
+                map.put("status","500");
+                map.put("message","服务器忙！");
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(map);
+            }
 
+            elevatorEvent.setId(veEventFlow.getEid());
+            elevatorEvent.setEventStatus(1);
+            rel = elevatorEventService.updateById(elevatorEvent);
             if(!rel){
                 map.put("status","500");
                 map.put("message","服务器忙！");
@@ -251,6 +275,71 @@ public class ElevatorEventController extends BaseController {
             }
             map.put("status","201");
             map.put("message","分配成功！");
+            return ResponseEntity.status(HttpStatus.CREATED).body(map);
+        }catch (Exception e){
+            logger.error(e.toString());
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+    }
+
+    /**
+     * 事件处理完成
+     */
+    @RequestMapping(value = "/finish",method = RequestMethod.POST)
+    public ResponseEntity<Map<String,Object>> eventFinish(@RequestParam(value = "img",required = false) MultipartFile[] imgs,
+                                                           VeEventFlow veEventFlow){
+        Map<String,Object> map = new HashMap<>();
+        Wrapper<VeEventFlow> ew = new EntityWrapper<>();
+        ElevatorEvent elevatorEvent = new ElevatorEvent();
+        boolean rel = false;
+        try{
+            veEventFlow.setCreateTime(new Date(System.currentTimeMillis()));
+            rel = veEventFlowService.insert(veEventFlow);
+            if(!rel){
+                map.put("status","500");
+                map.put("message","服务器忙！");
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(map);
+            }
+
+            elevatorEvent.setId(veEventFlow.getEid());
+            elevatorEvent.setEventStatus(2);
+            rel = elevatorEventService.updateById(elevatorEvent);
+            if(!rel){
+                map.put("status","500");
+                map.put("message","服务器忙！");
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(map);
+            }
+
+            if(imgs != null){
+                for (MultipartFile img:imgs) {
+                    if(!FileTypeUtil.isImageByExtension(img.getOriginalFilename())){
+                        map.put("status","400");
+                        map.put("message","上传的不是图片！");
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
+                    }else {
+                        rel = elevatorEventService.getImgFile(filePath, img);
+                        if(!rel){
+                            map.put("status","400");
+                            map.put("message","获取图片信息失败！");
+                            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
+                        }
+
+                        VeEnclosure veEnclosure = new VeEnclosure();
+                        veEnclosure.setCreateTime(new Date(System.currentTimeMillis()));
+                        veEnclosure.setAppid(elevatorEvent.getId());
+                        veEnclosure.setApptype(0);
+                        veEnclosure.setUrl(img.getOriginalFilename());
+                        rel = veEnclosureService.insert(veEnclosure);
+                        if(!rel){
+                            map.put("status","500");
+                            map.put("message","服务器忙！");
+                            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(map);
+                        }
+                    }
+                }
+            }
+            map.put("status","201");
+            map.put("message","处理成功！");
             return ResponseEntity.status(HttpStatus.CREATED).body(map);
         }catch (Exception e){
             logger.error(e.toString());

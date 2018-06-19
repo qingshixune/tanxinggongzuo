@@ -3,12 +3,14 @@ package cn.gov.zunyi.video.model;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.enums.IdType;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
 import java.util.Date;
 
+@TableName("emergency_command")
 public class EmergencyCommand extends Model<EmergencyCommand> {
 
     @TableId(value="id",type = IdType.UUID)

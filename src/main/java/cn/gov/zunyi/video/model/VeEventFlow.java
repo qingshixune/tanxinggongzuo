@@ -62,6 +62,14 @@ public class VeEventFlow extends Model<VeEventFlow> {
     @TableField("note")
     private String note;
 
+    @ApiModelProperty(value="处理人名字")
+    @TableField(exist = false)
+    private String uName;
+
+    @ApiModelProperty(value="处理人手机")
+    @TableField(exist = false)
+    private String uPhone;
+
     public String getId() {
         return id;
     }
@@ -142,6 +150,22 @@ public class VeEventFlow extends Model<VeEventFlow> {
         this.manageTime = manageTime;
     }
 
+    public String getuName() {
+        return uName;
+    }
+
+    public void setuName(String uName) {
+        this.uName = uName;
+    }
+
+    public String getuPhone() {
+        return uPhone;
+    }
+
+    public void setuPhone(String uPhone) {
+        this.uPhone = uPhone;
+    }
+
     public VeEventFlow() {
     }
 
@@ -153,11 +177,13 @@ public class VeEventFlow extends Model<VeEventFlow> {
                 ", updateTime=" + updateTime +
                 ", isDeleted='" + isDeleted + '\'' +
                 ", eid='" + eid + '\'' +
-                ", manage_time='" + manageTime + '\'' +
-                ", processMode='" + processMode + '\'' +
+                ", manageTime='" + manageTime + '\'' +
+                ", processMode=" + processMode +
                 ", processResult='" + processResult + '\'' +
                 ", uid=" + uid +
                 ", note='" + note + '\'' +
+                ", uName='" + uName + '\'' +
+                ", uPhone='" + uPhone + '\'' +
                 '}';
     }
 
